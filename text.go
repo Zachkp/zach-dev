@@ -1,8 +1,11 @@
 package main
 
 var (
-	AboutMe = `I like building cool things with code and figuring out how stuff works. 
-	When I’m not at my computer, you’ll usually find me training Muay Thai or shooting pool.`
+	AboutMe = `I love building software that’s both useful and fun, and I’m always curious about how things work behind the scenes. 
+	Most of my projects start with a simple idea and turn into a chance to learn something new, whether it’s exploring a 
+	different language, experimenting with tools, or solving tricky problems.
+	When I’m not coding, you’ll usually find me training Muay Thai, shooting pool with friends, 
+	or chasing down a new challenge outside the screen.`
 
 	ProjectOne = `A terminal-based email client built in Go with fuzzyfinder capabilities
 	using the Charmbracelet TUI framework and go-imap.`
