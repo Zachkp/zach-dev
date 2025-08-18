@@ -12,8 +12,10 @@
 </head>
 
 <!-- Nav Bar -->
-<body class="bg-gray-900 text-gray-200 font-sans">
-  <header class="flex justify-center bg-gray-900 shadow p-6">
+<body class="relative h-full w-full bg-gray-950 text-gray-200 font-sans min-h-screen animated-grid">
+<div class="fixed top-0 z-[-2] h-screen w-screen bg-[#000000] bg-[radial-gradient(#ffffff33_1px,#00091d_1px)] bg-[size:20px_20px] animate-diagonal-drift"></div>  
+
+  <header class="flex justify-center shadow p-6">
     <nav class="space-x-10">
       <a href="#Home" class="hover:text-green-300">Home</a>
       <a href="#Project" class="hover:text-green-300">Projects</a>
@@ -100,13 +102,10 @@
 
 
           <div class="border rounded p-4 flex flex-col h-full">
-            
             <div class="flex-grow">  
               <h3 class="font-bold mb-4 text-center">Go-ytm</h3>
               <img src="images/go-ytm.gif" alt="go-ytm Project">
-
               <p class="mt-4 mb-4">{{ .projectTwoContent }}</p>
-
             </div>
             <div class="flex flex-wrap gap-1 mt-auto">
               <div class="tech-badge">Cobra-cli</div> 
@@ -184,7 +183,7 @@
     <hr class="m-10">
     <!-- Footer -->
      <footer class="w-full pt-1">
-        <nav class="space-x-10 flex justify-center bg-gray-900">
+        <nav class="space-x-10 flex justify-center">
             <a href="#Home" class="hover:text-green-300">Home</a>
             <a href="#Project" class="hover:text-green-300">Projects</a>
             <a href="#Contact" class="hover:text-green-300">Contact</a>
