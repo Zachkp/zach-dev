@@ -1,23 +1,95 @@
+/* Professional pastel tech badges */
 .tech-badge {
   display: inline-flex;
   align-items: center;
   border-radius: 0.5rem;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  font-weight: 600;
-  padding: 0.25rem 0.5rem;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(168, 162, 158, 0.3);
+  font-weight: 500;
+  padding: 0.25rem 0.6rem;
   font-size: 12px;
-  color: #f8fafc;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  color: #e2e8f0;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
 }
 
 .tech-badge:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.12);
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-color: rgba(168, 162, 158, 0.5);
 }
+
+/* Subtle lavender accent - for special badges */
+.lavender-accent {
+  border: 1px solid rgba(196, 181, 253, 0.4);
+  box-shadow: 0 0 8px rgba(196, 181, 253, 0.2);
+}
+
+.lavender-accent:hover {
+  box-shadow: 0 0 16px rgba(196, 181, 253, 0.3);
+  border-color: rgba(196, 181, 253, 0.6);
+}
+
+/* Text-only lavender accent */
+/* Lavender text accent - for navigation/links */
+.lavender-text {
+  color: #c4b5fd;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-shadow: 0 0 8px rgba(196, 181, 253, 0.3);
+}
+
+.lavender-text:hover {
+  color: #a78bfa;
+  text-shadow: 0 0 16px rgba(196, 181, 253, 0.6);
+  transform: translateY(-1px);
+}
+
+/* Soft mint accent - for frameworks/libraries */
+.mint-accent {
+  border: 1px solid rgba(167, 243, 208, 0.4);
+  box-shadow: 0 0 8px rgba(167, 243, 208, 0.2);
+}
+
+.mint-accent:hover {
+  box-shadow: 0 0 16px rgba(167, 243, 208, 0.3);
+  border-color: rgba(167, 243, 208, 0.6);
+}
+
+/* Warm peach accent - for languages */
+.peach-accent {
+  border: 1px solid rgba(254, 202, 202, 0.4);
+  box-shadow: 0 0 8px rgba(254, 202, 202, 0.2);
+}
+
+.peach-accent:hover {
+  box-shadow: 0 0 16px rgba(254, 202, 202, 0.3);
+  border-color: rgba(254, 202, 202, 0.6);
+}
+
+/* Soft blue accent - for tools/databases */
+.sky-accent {
+  border: 1px solid rgba(186, 230, 253, 0.4);
+  box-shadow: 0 0 8px rgba(186, 230, 253, 0.2);
+}
+
+.sky-accent:hover {
+  box-shadow: 0 0 16px rgba(186, 230, 253, 0.3);
+  border-color: rgba(186, 230, 253, 0.6);
+}
+
+/* Muted gold accent - for premium/special tech */
+.gold-accent {
+  border: 1px solid rgba(251, 191, 36, 0.4);
+  box-shadow: 0 0 8px rgba(251, 191, 36, 0.2);
+}
+
+.gold-accent:hover {
+  box-shadow: 0 0 16px rgba(251, 191, 36, 0.3);
+  border-color: rgba(251, 191, 36, 0.6);
+}
+
 @keyframes diagonal-drift {
   0% { 
     background-position: 0 0; 
