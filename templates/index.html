@@ -7,6 +7,26 @@
   <title>Zach-Dev</title>
   <link rel="icon" href="images/favicon.ico" type="image/png" sizes="64x64">
   <link rel="stylesheet" href="/static/styles.css">
+  <style>
+    /* HTMX transitions for smooth overlay */
+    #contact-overlay {
+      transition: opacity 0.3s ease-in-out;
+    }
+    
+    #contact-overlay.htmx-added {
+      opacity: 0;
+    }
+    
+    #contact-overlay.htmx-added.htmx-settled {
+      opacity: 1;
+    }
+    
+    /* Modal backdrop blur effect */
+    .modal-backdrop {
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+  </style>
   <script src="https://unpkg.com/htmx.org@1.9.10"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -18,14 +38,16 @@
 
   <header class="flex justify-center shadow p-6">
     <nav class="space-x-10">
-      <a href="#Home" class="">Home</a>
-      <a href="#Project" class="">Projects</a>
-      <a href="#Contact" class="">Contact</a>
+      <a href="#Home" class="lavender-text">Home</a>
+      <a href="#Project" class="lavender-text">Projects</a>
+      <a href="#" 
+         hx-get="/contact-form" 
+         hx-target="#contact-overlay" 
+         hx-swap="innerHTML"
+         class="lavender-text">Contact</a>
     </nav>
   </header>
   <hr class="mr-10 ml-10">
-
-  <!-- Edu/Certs & work exp flip menu -->
 
   <main class="max-w-4xl mx-auto mt-25 p-6 rounded-xl shadow">
     <!-- About Me -->
@@ -63,7 +85,7 @@
                         :class="copied ? 'bg-green-600 hover:bg-green-700' : 'bg-red-600 hover:bg-red-700'"
                         class="flex items-center justify-center w-10 h-10 text-white rounded-full transition-colors relative group">
                     <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M1.5 8.67v8.58a3 3 0 003 3h15a3 3 0 003-3V8.67l-8.928 5.493a3 3 0 01-3.144 0L1.5 8.67z"/>
+                        <path d="M1.5 8.67v8.58a3 3 0 003 3h15a3 0 003-3V8.67l-8.928 5.493a3 3 0 01-3.144 0L1.5 8.67z"/>
                         <path d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z"/>
                     </svg>
                     <!-- Tooltip -->
@@ -75,121 +97,95 @@
         </div>
     </header>
 
-      <!-- add socials as buttons underneath about me paragraph in 1st column -->
     <div class="grid gap-6 columns-2">
       <p class="flex items-center text-center text-lg mb-6 col-start-1"> {{ .aboutMeContent }} </p>
       <img class="col-start-2 rounded-xl" src="images/zach.jpg" alt="Zachariah Kordas-Potter">
     </div>
     
-    <a name="Project">
-        <!-- Projects -->
-        <h2 id="Project" class="flex justify-center text-xl font-semibold p-6">Projects</h2>
-        <div class="grid gap-4 md:grid-cols-2">
-          <div class="border lavender-accent rounded p-4 flex flex-col h-full">
-            <div class="flex-grow">
-              <h3 class="font-bold mb-4 text-center">GoMail</h3>
-              <img src="images/GoMail.gif" alt="GoMail Project">
-              <p class="mt-4 mb-4">{{ .projectOneContent }}</p>
-            </div>
-            <div class="flex flex-wrap gap-1 mt-auto">
-              <div class="tech-badge gold-accent">Bubbletea</div> 
-              <div class="tech-badge gold-accent">Lipgloss</div>  
-              <div class="tech-badge gold-accent">go-Imap</div>   
-              <div class="tech-badge gold-accent">go-Message</div>
-              <div class="tech-badge gold-accent">fzf</div>       
-              <div class="tech-badge gold-accent">godotenv</div>  
-            </div>
-          </div>
-
-
-          <div class="border lavender-accent rounded p-4 flex flex-col h-full">
-            <div class="flex-grow">  
-              <h3 class="font-bold mb-4 text-center">Go-ytm</h3>
-              <img src="images/go-ytm.gif" alt="go-ytm Project">
-              <p class="mt-4 mb-4">{{ .projectTwoContent }}</p>
-            </div>
-            <div class="flex flex-wrap gap-1 mt-auto">
-              <div class="tech-badge gold-accent">Cobra-cli</div> 
-              <div class="tech-badge gold-accent">Bubbletea</div>  
-              <div class="tech-badge gold-accent">Lipgloss</div>
-              <div class="tech-badge gold-accent">yt-dlp</div>
-              <div class="tech-badge gold-accent">mpv</div>       
-            </div>
-          </div>
-
-
-          <div class="border lavender-accent rounded p-4 flex flex-col h-full">
-            <!-- Add better photo -->
-            <div class="flex-grow">
-              <h3 class="font-bold mb-4 text-center">Game Recommender</h3>
-              <img src="images/GameRecommender.png" alt="Game Recommender Project">
-              <p class="mt-4 mb-4">{{ .projectThreeContent }}</p>
-            </div>
-            <div class="flex flex-wrap gap-1 mt-auto">
-              <div class="tech-badge gold-accent">Python</div>
-              <div class="tech-badge gold-accent">Flask</div>
-              <div class="tech-badge gold-accent">Pandas</div>
-              <div class="tech-badge gold-accent">Scikit-learn</div>
-              <div class="tech-badge gold-accent">Matplotlib</div>
-              <div class="tech-badge gold-accent">psutil</div>
-            </div>
-          </div>
-
-
-        <div class="border lavender-accent rounded p-4 flex flex-col h-full">
-
-          <div class="flex-grow">
-            <h3 class="font-bold mb-4 text-center">Zach-Dev Website</h3>
-            <img src="images/portfolioSite.png" alt="Portfolio Website">
-            <p class="mt-4 mb-4">{{ .projectFourContent }}</p>
-          </div>
-          <div class="flex flex-wrap gap-1 mt-auto">
-            <div class="tech-badge gold-accent">Golang</div> 
-            <div class="tech-badge gold-accent">htmx</div>  
-            <div class="tech-badge gold-accent">alpine.js</div>
-            <div class="tech-badge gold-accent">Tailwindcss</div>
-            <div class="tech-badge gold-accent">Gin</div>       
-            <div class="tech-badge gold-accent">placeholder</div>  
-          </div>
+    <!-- Projects -->
+    <h2 id="Project" class="flex justify-center text-xl font-semibold p-6">Projects</h2>
+    <div class="grid gap-4 md:grid-cols-2">
+      <div class="border lavender-accent rounded p-4 flex flex-col h-full">
+        <div class="flex-grow">
+          <h3 class="font-bold mb-4 text-center">GoMail</h3>
+          <img src="images/GoMail.gif" alt="GoMail Project">
+          <p class="mt-4 mb-4">{{ .projectOneContent }}</p>
+        </div>
+        <div class="flex flex-wrap gap-1 mt-auto">
+          <div class="tech-badge gold-accent">Bubbletea</div> 
+          <div class="tech-badge gold-accent">Lipgloss</div>  
+          <div class="tech-badge gold-accent">go-Imap</div>   
+          <div class="tech-badge gold-accent">go-Message</div>
+          <div class="tech-badge gold-accent">fzf</div>       
+          <div class="tech-badge gold-accent">godotenv</div>  
         </div>
       </div>
-    </a>
 
-
-
-    <a name="Contact">
-        <!-- Contact -->
-        <h2 id="Contact" class="flex justify-center text-xl font-semibold p-10">Contact Me</h2>
-        <div class="grid grid-cols-1 gap-2 sm:grid-cols-2">
-            <div class="h-16">
-                <input id="fullName" class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors lavender-accent" placeholder="Name" type="text" name="fullName">
-            </div>
-            <div class="h-16">
-                <input id="email" class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors lavender-accent" placeholder="Email" type="text" name="email">
-            </div>
-            <div class="h-32 sm:col-span-2">
-                <textarea class="flex w-full rounded-md border border-input min-h-[120px] bg-transparent px-3 py-1 text-sm shadow-sm transition-colors lavender-accent" id="message" placeholder="Message" type="textarea" name="message"></textarea>
-            </div>
-            <div class="mt-2 sm:col-span-2">
-              <!-- ADD HOVER EFFECTS TO button -->
-                <button class="flex rounded-md border border-input items-center justify-center gap-2 h-9 px-4 py-2 w-full lavender-accent" type="submit">
-                    <div class="items-center">
-                        <span>Send Message</span>
-                    </div>
-                </button>
-            </div>
+      <div class="border lavender-accent rounded p-4 flex flex-col h-full">
+        <div class="flex-grow">  
+          <h3 class="font-bold mb-4 text-center">Go-ytm</h3>
+          <img src="images/go-ytm.gif" alt="go-ytm Project">
+          <p class="mt-4 mb-4">{{ .projectTwoContent }}</p>
         </div>
-    </a>
+        <div class="flex flex-wrap gap-1 mt-auto">
+          <div class="tech-badge gold-accent">Cobra-cli</div> 
+          <div class="tech-badge gold-accent">Bubbletea</div>  
+          <div class="tech-badge gold-accent">Lipgloss</div>
+          <div class="tech-badge gold-accent">yt-dlp</div>
+          <div class="tech-badge gold-accent">mpv</div>       
+        </div>
+      </div>
+
+      <div class="border lavender-accent rounded p-4 flex flex-col h-full">
+        <div class="flex-grow">
+          <h3 class="font-bold mb-4 text-center">Game Recommender</h3>
+          <img src="images/GameRecommender.png" alt="Game Recommender Project">
+          <p class="mt-4 mb-4">{{ .projectThreeContent }}</p>
+        </div>
+        <div class="flex flex-wrap gap-1 mt-auto">
+          <div class="tech-badge gold-accent">Python</div>
+          <div class="tech-badge gold-accent">Flask</div>
+          <div class="tech-badge gold-accent">Pandas</div>
+          <div class="tech-badge gold-accent">Scikit-learn</div>
+          <div class="tech-badge gold-accent">Matplotlib</div>
+          <div class="tech-badge gold-accent">psutil</div>
+        </div>
+      </div>
+
+      <div class="border lavender-accent rounded p-4 flex flex-col h-full">
+        <div class="flex-grow">
+          <h3 class="font-bold mb-4 text-center">Zach-Dev Website</h3>
+          <img src="images/portfolioSite.png" alt="Portfolio Website">
+          <p class="mt-4 mb-4">{{ .projectFourContent }}</p>
+        </div>
+        <div class="flex flex-wrap gap-1 mt-auto">
+          <div class="tech-badge gold-accent">Golang</div> 
+          <div class="tech-badge gold-accent">htmx</div>  
+          <div class="tech-badge gold-accent">alpine.js</div>
+          <div class="tech-badge gold-accent">Tailwindcss</div>
+          <div class="tech-badge gold-accent">Gin</div>       
+          <div class="tech-badge gold-accent">HTML</div>  
+        </div>
+      </div>
+    </div>
 
     <hr class="m-10">
     <!-- Footer -->
      <footer class="w-full pt-1">
         <nav class="space-x-10 flex justify-center">
-            <a href="#Home" class="hover:text-green-300">Home</a>
-            <a href="#Project" class="hover:text-green-300">Projects</a>
-            <a href="#Contact" class="hover:text-green-300">Contact</a>
+            <a href="#Home" class="lavender-text">Home</a>
+            <a href="#Project" class="lavender-text">Projects</a>
+            <a href="#" 
+               hx-get="/contact-form" 
+               hx-target="#contact-overlay" 
+               hx-swap="innerHTML"
+               class="lavender-text">Contact</a>
         </nav>
      </footer>
   </main> 
+
+  <!-- Contact Form Overlay -->
+  <div id="contact-overlay" class="fixed inset-0 z-50 hidden"></div>
+
 </body>
 </html>
