@@ -1,0 +1,15 @@
+<!-- Success Message -->
+<div class="text-center py-8">
+    <div class="mb-6">
+        <svg class="w-16 h-16 mx-auto text-green-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+        <h3 class="text-xl font-semibold text-green-400 mb-2">Message Sent!</h3>
+        <p class="text-gray-300 mb-6">{{ .success }}</p>
+        
+        <button onclick="document.getElementById('contact-overlay').innerHTML = ''; document.getElementById('contact-overlay').classList.add('hidden');"
+                class="inline-flex items-center justify-center gap-2 h-10 px-6 py-2 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-md transition-colors">
+            Close
+        </button>
+    </div>
+</div>
