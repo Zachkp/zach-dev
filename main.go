@@ -46,6 +46,16 @@ func main() {
 				"Boosted operational efficiency by managing backroom inventory processes and streamlining communication between floor and logistics teams",
 				"Enhanced pricing and signage accuracy across departments by standardizing daily checks and collaborating cross-functionally",
 			},
+			"jobTitle2":  "Manager",
+			"company2":   "Jasons Catered Events",
+			"startDate2": "Aug 2016",
+			"endDate2":   "Present",
+			"logoPath2":  "images/jasonsCateringLogo.png",
+			"bulletPoints2": []string{
+				"Improved client satisfaction by coordinating customized menus and ensuring all dietary requirements were accurately met",
+				"Supported event technology by troubleshooting AV equipment and managing digital order tracking systems, reducing technical delays and improving communication",
+				"Maintained supply inventory and coordinated timely delivery between venues, optimizing resource allocation and minimizing downtime.",
+			},
 		})
 	})
 
@@ -62,6 +72,15 @@ func main() {
 				"Graduated Magna Cum Laude with 3.8 GPA",
 				"Relevant coursework: Data Structures, Algorithms, Web Development",
 				"Senior project: Machine Learning recommendation system",
+			},
+			"degree2":      "Project Management",
+			"institution2": "Comptia",
+			"startDate2":   "July 2022",
+			"endDate2":     "Present",
+			"logoPath2":    "images/comptiaCert.png",
+			"bulletPoints2": []string{
+				"Certified in agile project management methodology",
+				"Verification code: SRRRPGBSWBRQCCDJ",
 			},
 		})
 	})
