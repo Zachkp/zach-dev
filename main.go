@@ -32,6 +32,40 @@ func main() {
 		})
 	})
 
+	// Work experience content
+	// In your /work-content route
+	r.GET("/work-content", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "work-content.html", gin.H{
+			"jobTitle":  "Presentation Expert",
+			"company":   "Target",
+			"startDate": "Aug 2023",
+			"endDate":   "Present",
+			"logoPath":  "images/TargetLogo.jpg",
+			"bulletPoints": []string{
+				"Executed over 300 merchandising transitions on tight timelines by organizing team workflows and adapting quickly to changing priorities",
+				"Boosted operational efficiency by managing backroom inventory processes and streamlining communication between floor and logistics teams",
+				"Enhanced pricing and signage accuracy across departments by standardizing daily checks and collaborating cross-functionally",
+			},
+		})
+	})
+
+	// Education content
+	// In your /education-content route
+	r.GET("/education-content", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "education-content.html", gin.H{
+			"degree":      "Bachelor of Computer Science",
+			"institution": "University Name",
+			"startDate":   "Sept 2019",
+			"endDate":     "May 2023",
+			"logoPath":    "images/WGU-logo.png",
+			"bulletPoints": []string{
+				"Graduated Magna Cum Laude with 3.8 GPA",
+				"Relevant coursework: Data Structures, Algorithms, Web Development",
+				"Senior project: Machine Learning recommendation system",
+			},
+		})
+	})
+
 	// Handle contact form submission with HTMX
 	r.POST("/contact", func(c *gin.Context) {
 		name := c.PostForm("fullName")
