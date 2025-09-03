@@ -54,7 +54,7 @@ func main() {
 	r.GET("/education-content", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "education-content.html", gin.H{
 			"degree":      "Bachelor of Computer Science",
-			"institution": "University Name",
+			"institution": "Western Governors University",
 			"startDate":   "Sept 2019",
 			"endDate":     "May 2023",
 			"logoPath":    "images/WGU-logo.png",
