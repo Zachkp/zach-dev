@@ -1,0 +1,17 @@
+<div class="mt-3 border lavender-accent rounded p-5">
+    <div class="flex items-start gap-4">
+        <img class="w-16 h-16 rounded-full flex-shrink-0" alt="{{ .institution }}" src="{{ .logoPath }}">
+        <div class="flex-1">
+            <time class="text-xs text-muted-foreground">{{ .startDate }} - {{ .endDate }}</time>
+            <h2 class="mt-2 font-semibold leading-none">{{ .degree }}</h2>
+            <p class="mt-1 text-xs text-muted-foreground">{{ .institution }}</p>
+            <ul class="ml-4 list-outside list-disc mt-3">
+                {{ range .bulletPoints }}
+                <li class="prose pr-8 text-sm dark:prose-invert mb-2">
+                    {{ . }}
+                </li>
+                {{ end }}
+            </ul>
+        </div>
+    </div>
+</div>
