@@ -96,11 +96,52 @@
         </div>
     </header>
 
+    <!-- About me -->
     <div class="grid gap-6 columns-2">
       <p class="flex items-center text-center text-lg mb-6 col-start-1"> {{ .aboutMeContent }} </p>
       <img class="col-start-2 rounded-xl" src="images/zach.jpg" alt="Zachariah Kordas-Potter">
     </div>
-    
+
+
+
+        <!-- TODO: Edu/Certs/Work exp -->
+        <!-- add icons with links to the organizations-->
+<div class="toggle-container h-9 items-center justify-center rounded-lg p-1 mb-2 grid w-full grid-cols-2">
+    <button class="toggle-button active p-1 mr-3 border lavender-accent rounded inline-flex items-center justify-center whitespace-nowrap"
+            hx-get="/work-content"
+            hx-target="#experience-content"
+            hx-swap="innerHTML"
+            onclick="setActiveButton(this)">
+        Work
+    </button>
+    <button class="toggle-button p-1 mr-3 border lavender-accent rounded inline-flex items-center justify-center whitespace-nowrap"
+            hx-get="/education-content"
+            hx-target="#experience-content"
+            hx-swap="innerHTML"
+            onclick="setActiveButton(this)">
+        Education
+    </button>
+</div>
+
+<!-- Content area that gets swapped -->
+<div id="experience-content">
+    <!-- Initial work content (default) -->
+    <div class="mt-3 border lavender-accent rounded p-5">
+        <div class="flex items-start gap-4">
+            <img class="w-16 h-16 rounded-full flex-shrink-0" alt="Target" src="images/TargetLogo.jpg">
+            <div class="flex-1">
+                <time class="text-xs text-muted-foreground">Aug 2023 - Present</time>
+                <h2 class="mt-2 font-semibold leading-none">Presentation Expert</h2>
+                <p class="mt-1 text-xs text-muted-foreground">Target</p>
+                <ul class="ml-4 list-outside list-disc mt-3"> 
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
     <!-- Projects -->
     <h2 id="Project" class="flex justify-center text-xl font-semibold p-6">Projects</h2>
     <div class="grid gap-4 md:grid-cols-2">
