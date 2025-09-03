@@ -102,3 +102,51 @@
 .animate-diagonal-drift {
   animation: diagonal-drift 5s linear infinite;
 }
+
+/* Toggle Container */
+.toggle-container {
+    display: flex;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(168, 162, 158, 0.3);
+    border-radius: 12px;
+    padding: 4px;
+    gap: 4px;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto 16px auto;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+/* Toggle Buttons */
+.toggle-button {
+    flex: 1;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 14px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    background: transparent;
+    color: #e2e8f0;
+}
+
+/* Active/Selected State */
+.toggle-button.active {
+    background: rgba(196, 181, 253, 0.2);
+    color: #c4b5fd;
+    border: 1px solid rgba(196, 181, 253, 0.4);
+    box-shadow: 0 0 8px rgba(196, 181, 253, 0.2);
+    text-shadow: 0 0 8px rgba(196, 181, 253, 0.3);
+}
+
+/* Hover State */
+.toggle-button:not(.active):hover {
+    background: rgba(255, 255, 255, 0.12);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(168, 162, 158, 0.5);
+    color: #c4b5fd;
+    text-shadow: 0 0 8px rgba(196, 181, 253, 0.3);
+}
