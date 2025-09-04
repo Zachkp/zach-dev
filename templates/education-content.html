@@ -1,24 +1,28 @@
 <div class="mt-3 border lavender-accent rounded p-5">
-    <div class="flex items-start gap-4">
-        <a target="_blank" href="https://www.wgu.edu/">
-            <img class="w-16 h-16 rounded-full flex-shrink-0" alt="{{ .institution }}" src="{{ .logoPath }}">
-        </a>
-        <div class="flex-1">
-            <time class="text-xs text-muted-foreground">{{ .startDate }} - {{ .endDate }}</time>
-            <h2 class="mt-2 font-semibold leading-none">{{ .degree }}</h2>
-            <p class="mt-1 text-xs text-muted-foreground">{{ .institution }}</p>
-            <ul class="ml-4 list-outside list-disc mt-3">
-                {{ range .bulletPoints }}
-                <li class="prose pr-8 text-sm dark:prose-invert mb-2">
-                    {{ . }}
-                </li>
-                {{ end }}
-            </ul>
+    <div class="flex-column items-start gap-4">
+        <div class="flex flex-col justify-start gap-4 flex-1">
+            <a class="absolute" target="_blank" href="https://www.wgu.edu/">
+                <img class="w-16 h-16 rounded-full flex-shrink-0" alt="{{ .institution }}" src="{{ .logoPath }}">
+            </a>
+            <div class="ml-[80px]">
+                <time class="text-xs text-muted-foreground">{{ .startDate }} - {{ .endDate }}</time>
+                <h2 class="mt-2 font-semibold leading-none">{{ .degree }}</h2>
+                <p class="mt-1 text-xs text-muted-foreground">{{ .institution }}</p>
+                <ul class="ml-4 list-outside list-disc mt-3">
+                    {{ range .bulletPoints }}
+                    <li class="prose pr-8 text-sm dark:prose-invert mb-2">
+                        {{ . }}
+                    </li>
+                    {{ end }}
+                </ul>
+            </div>
         </div>
-        <a target="_blank" href="https://www.certmetrics.com/comptia/public/verification.aspx/">
+        <br>
+
+        <a class="absolute" target="_blank" href="https://www.certmetrics.com/comptia/public/verification.aspx/">
             <img class="w-16 h-16 rounded-full flex-shrink-0" alt="{{ .institution2 }}" src="{{ .logoPath2 }}">
         </a>
-        <div class="flex-1">
+        <div class="flex-col ml-[80px]">
             <time class="text-xs text-muted-foreground">{{ .startDate2 }}</time>
             <h2 class="mt-2 font-semibold leading-none">{{ .degree2 }}</h2>
             <p class="mt-1 text-xs text-muted-foreground">{{ .institution2 }}</p>
@@ -30,6 +34,5 @@
                 {{ end }}
             </ul>
         </div>
-
     </div>
 </div>
