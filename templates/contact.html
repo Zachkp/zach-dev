@@ -72,13 +72,25 @@
 
             <!-- TODO: ADD ACTUAL EMAIL FUNC -->
             <!-- Contact Form -->
-            <div id="contact-form-content">
+            <div id="contact-form-content" x-data="{ submitting: false }">
                 <form hx-post="/contact" 
                       hx-target="#contact-form-content" 
                       hx-swap="innerHTML"
+                      hx-indicator="#loading"
+                      @submit="submitting = true"
                       class="space-y-6">
+
+                <div id="loading" class="htmx-indicator text-center py-4">
+                    <div class="inline-flex items-center gap-2 text-purple-400">
+                        <svg class="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Sending message...
+                    </div>
+                </div>
                     
-                    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2" x-show="!submitting">
                         <div>
                             <label for="fullName" class="block text-sm font-medium mb-2 text-gray-300">Name</label>
                             <input id="fullName" 
@@ -109,9 +121,10 @@
                                   required></textarea>
                     </div>
                     
-                    <div class="text-center">
+                    <div class="text-center" x-show="!submitting">
                         <button class="inline-flex items-center justify-center gap-2 h-12 px-8 py-3 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-md transition-colors focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-gray-900" 
-                                type="submit">
+                                type="submit"
+                                :disabled="submitting">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
                             </svg>
