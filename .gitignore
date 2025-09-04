@@ -4,5 +4,6 @@ explanations.md
 ignore/
 tmp/
 /tmp/
+.env
 
 TODO.md
