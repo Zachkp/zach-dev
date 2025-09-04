@@ -102,27 +102,26 @@
       <img class="col-start-2 rounded-xl" src="images/zach.jpg" alt="Zachariah Kordas-Potter">
     </div>
 
-
-
-        <!-- TODO: Edu/Certs/Work exp -->
-        <!-- add icons with links to the organizations-->
-    <div class="h-9 items-center justify-center rounded-lg p-1 mb-2 grid w-full grid-cols-2">
-        <button class="active p-1 mr-3 border lavender-accent rounded inline-flex items-center justify-center whitespace-nowrap"
-                hx-get="/education-content"
-                hx-target="#experience-content"
-                hx-swap="innerHTML"
-                hx-trigger="click, load"
-                onclick="setActiveButton(this)">
-            Education
-        </button>
-        <button class="p-1 border lavender-accent rounded inline-flex items-center justify-center whitespace-nowrap"
-                hx-get="/work-content"
-                hx-target="#experience-content"
-                hx-swap="innerHTML"
-                onclick="setActiveButton(this)">
-            Work
-        </button>
-    </div>
+        <div class="border lavender-accent p-2 items-center justify-center rounded-lg p-1 mb-2 grid w-full grid-cols-2" 
+             x-data="{ activeTab: 'education' }">
+            <button class="p-1 mr-3 border lavender-accent rounded inline-flex items-center justify-center whitespace-nowrap"
+                    :class="activeTab === 'education' ? 'toggle-button active' : 'toggle-button'"
+                    hx-get="/education-content"
+                    hx-target="#experience-content"
+                    hx-swap="innerHTML"
+                    hx-trigger="click, load"
+                    @click="activeTab = 'education'">
+                Education
+            </button>
+            <button class="p-1 border lavender-accent rounded inline-flex items-center justify-center whitespace-nowrap"
+                    :class="activeTab === 'work' ? 'toggle-button active' : 'toggle-button'"
+                    hx-get="/work-content"
+                    hx-target="#experience-content"
+                    hx-swap="innerHTML"
+                    @click="activeTab = 'work'">
+                Work
+            </button>
+        </div>
     
     <!-- Content area that gets swapped -->
     <div id="experience-content"></div>
