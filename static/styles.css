@@ -150,3 +150,22 @@
     color: #c4b5fd;
     text-shadow: 0 0 8px rgba(196, 181, 253, 0.3);
 }
+
+/* HTMX transitions for smooth overlay */
+#contact-overlay {
+    transition: opacity 0.3s ease-in-out;
+}
+
+#contact-overlay.htmx-added {
+    opacity: 0;
+}
+
+#contact-overlay.htmx-added.htmx-settled {
+    opacity: 1;
+}
+
+/* Modal backdrop blur effect */
+.modal-backdrop {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
