@@ -39,25 +39,25 @@ func main() {
 	// Work experience content
 	r.GET("/work-content", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "work-content.html", gin.H{
-			"jobTitle":  "Presentation Expert",
-			"company":   "Target",
-			"startDate": "Aug 2023",
-			"endDate":   "Present",
+			"jobTitle":  jobTitle,
+			"company":   company,
+			"startDate": startDateWork,
+			"endDate":   endDate,
 			"logoPath":  "images/TargetLogo.jpg",
 			"bulletPoints": []string{
-				"Executed over 300 merchandising transitions on tight timelines by organizing team workflows and adapting quickly to changing priorities",
-				"Boosted operational efficiency by managing backroom inventory processes and streamlining communication between floor and logistics teams",
-				"Enhanced pricing and signage accuracy across departments by standardizing daily checks and collaborating cross-functionally",
+				targetBullet1,
+				targetBullet2,
+				targetBullet3,
 			},
-			"jobTitle2":  "Manager",
-			"company2":   "Jasons Catered Events",
-			"startDate2": "Aug 2016",
-			"endDate2":   "Present",
+			"jobTitle2":  jobTitle2,
+			"company2":   company2,
+			"startDate2": startDateWork2,
+			"endDate2":   endDate2,
 			"logoPath2":  "images/jasonsCateringLogo.png",
 			"bulletPoints2": []string{
-				"Improved client satisfaction by coordinating customized menus and ensuring all dietary requirements were accurately met",
-				"Supported event technology by troubleshooting AV equipment and managing digital order tracking systems, reducing technical delays and improving communication",
-				"Maintained supply inventory and coordinated timely delivery between venues, optimizing resource allocation and minimizing downtime.",
+				cateringBullet1,
+				cateringBullet2,
+				cateringBullet3,
 			},
 		})
 	})
@@ -65,24 +65,25 @@ func main() {
 	// Education content
 	r.GET("/education-content", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "education-content.html", gin.H{
-			"degree":      "Bachelor of Computer Science",
-			"institution": "Western Governors University",
-			"startDate":   "Sept 2019",
-			"endDate":     "May 2023",
+			"degree":      degree,
+			"institution": institution,
+			"startDate":   startDateEdu,
+			"endDate":     endDateEdu,
 			"logoPath":    "images/WGU-logo.png",
 			"bulletPoints": []string{
-				"Graduated Magna Cum Laude with 3.8 GPA",
-				"Relevant coursework: Data Structures, Algorithms, Web Development",
-				"Senior project: Machine Learning recommendation system",
+				eduBullet1,
+				eduBullet2,
+				eduBullet3,
 			},
-			"degree2":      "Project Management",
-			"institution2": "Comptia",
-			"startDate2":   "July 2022",
-			"endDate2":     "Present",
+			"degree2":      certification,
+			"institution2": institution2,
+			"startDate2":   startDateEdu2,
+			"endDate2":     endDateEdu2,
 			"logoPath2":    "images/comptiaCert.png",
 			"bulletPoints2": []string{
-				"Certified in agile project management methodology",
-				"Verification code: SRRRPGBSWBRQCCDJ",
+				certBullet1,
+				certBullet2,
+				certBullet3,
 			},
 		})
 	})
