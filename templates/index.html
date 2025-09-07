@@ -1,4 +1,4 @@
-<!-- templates/index.html -->
+<!-- templates/index.html - Mobile Friendly Version -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,158 +12,164 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 
-<!-- Nav Bar -->
 <body class="relative h-full w-full bg-gray-950 text-gray-200 font-sans min-h-screen animated-grid">
     <div class="fixed top-0 z-[-2] h-screen w-screen bg-[#000000] bg-[radial-gradient(#ffffff33_1px,#00091d_1px)] bg-[size:20px_20px] animate-diagonal-drift"></div>  
 
-    <header class="flex justify-center shadow p-6">
-        <nav class="space-x-10">
-            <a href="#Home" class="lavender-text font-bold">Home</a>
-            <a href="#Project" class="lavender-text font-bold">Projects</a>
+    <!-- Mobile-friendly Navigation -->
+    <header class="flex justify-center shadow p-4 md:p-6">
+        <nav class="flex flex-col sm:flex-row sm:space-x-10 space-y-2 sm:space-y-0 w-full sm:w-auto">
+            <a href="#Home" class="lavender-text text-center py-2 sm:py-0">Home</a>
+            <a href="#Project" class="lavender-text text-center py-2 sm:py-0">Projects</a>
             <a href="#" 
                hx-get="/contact-form" 
                hx-target="#contact-overlay" 
                hx-swap="innerHTML"
-               class="lavender-text font-bold">Contact</a>
+               class="lavender-text text-center py-2 sm:py-0">Contact</a>
         </nav>
     </header>
-    <hr class="mr-10 ml-10">
+    <hr class="mx-4 md:mx-10">
 
-    <main class="max-w-4xl mx-auto mt-25 p-6 rounded-xl shadow">
-        <!-- About Me -->
-        <header class="grid grid-cols-2 gap-6">
-            <h2 id="Home" class="flex text-xl items-center font-semibold ml-20 col-start-1 mb-5">Zachariah Kordas-Potter</h2>
+    <main class="max-w-4xl mx-auto mt-8 md:mt-25 p-4 md:p-6 rounded-xl shadow">
+        <!-- About Me - Responsive Layout -->
+        <header class="flex flex-col lg:grid lg:grid-cols-2 gap-6">
+            <div class="flex flex-col items-center lg:items-start">
+                <h2 id="Home" class="text-xl md:text-2xl font-semibold mb-4 lg:mb-5 text-center lg:text-left lg:ml-20">
+                    Zachariah Kordas-Potter
+                </h2>
 
-            <div class="flex items-center gap-4 ml-20 mb-5 col-start-2">
-                <a href="https://linkedin.com/in/zach-kordas-potter" target="_blank" class="flex items-center justify-center w-10 h-10 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors">
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                    </svg>
-                </a>
+                <!-- Social Links - Mobile Responsive -->
+                <div class="flex flex-wrap items-center justify-center lg:justify-start gap-3 lg:ml-20 mb-5">
+                    <a href="https://linkedin.com/in/zach-kordas-potter" 
+                       target="_blank" 
+                       class="social-button flex items-center justify-center w-12 h-12 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                        </svg>
+                    </a>
 
-                <a href="https://github.com/Zachkp" target="_blank" class="flex items-center justify-center w-10 h-10 bg-gray-800 text-white rounded-full hover:bg-gray-900 transition-colors">
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                    </svg>
-                </a>
+                    <a href="https://github.com/Zachkp" 
+                       target="_blank" 
+                       class="social-button flex items-center justify-center w-12 h-12 bg-gray-800 text-white rounded-full hover:bg-gray-900 transition-colors">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                        </svg>
+                    </a>
 
-                <div x-data="{ 
-                    email: 'zachkordaspotter@gmail.com',
-                    copied: false,
-                    async copyEmail() {
-                        try {
-                            await navigator.clipboard.writeText(this.email);
-                            this.copied = true;
-                            setTimeout(() => { this.copied = false }, 2000);
-                        } catch (err) {
-                            console.error('Failed to copy: ', err);
-                            alert('Email: ' + this.email);
+                    <div x-data="{ 
+                        email: 'zachkordaspotter@gmail.com',
+                        copied: false,
+                        async copyEmail() {
+                            try {
+                                await navigator.clipboard.writeText(this.email);
+                                this.copied = true;
+                                setTimeout(() => { this.copied = false }, 2000);
+                            } catch (err) {
+                                console.error('Failed to copy: ', err);
+                                alert('Email: ' + this.email);
+                            }
                         }
-                    }
-                }">
-                    <button @click="copyEmail()" 
-                            :class="copied ? 'bg-green-600 hover:bg-green-700' : 'bg-red-600 hover:bg-red-700'"
-                            class="flex items-center justify-center w-10 h-10 text-white rounded-full transition-colors relative group">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                        </svg>
-                        <!-- Tooltip -->
-                        <span class="absolute -bottom-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap"
-                              x-text="copied ? 'Copied!' : 'Click to copy email'">
-                        </span>
-                    </button>
-                </div>
+                    }">
+                        <button @click="copyEmail()" 
+                                :class="copied ? 'bg-green-600 hover:bg-green-700' : 'bg-red-600 hover:bg-red-700'"
+                                class="social-button flex items-center justify-center w-12 h-12 text-white rounded-full transition-colors relative group">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                            </svg>
+                            <!-- Mobile-friendly Tooltip -->
+                            <span class="absolute -bottom-10 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10"
+                                  x-text="copied ? 'Copied!' : 'Click to copy'">
+                            </span>
+                        </button>
+                    </div>
 
-                <div x-data="{
-                    downloading: false,
-                    downloaded: false,
-                    downloadResume() {
-                        this.downloading = true;
-                        
-                        // Create a temporary link element
-                        const link = document.createElement('a');
-                        link.href = '/resume';
-                        link.download = 'Zachariah_Kordas_Potter_Resume.pdf';
-                        link.style.display = 'none';
-                        
-                        // Add to DOM, click, then remove
-                        document.body.appendChild(link);
-                        link.click();
-                        document.body.removeChild(link);
-                        
-                        // Update states
-                        this.downloading = false;
-                        this.downloaded = true;
-                        
-                        // Reset downloaded state after 3 seconds
-                        setTimeout(() => { this.downloaded = false }, 15000);
-                    }
-                }">
-                    <button @click="downloadResume()"
-                            :class="downloaded ? 'bg-green-600 hover:bg-green-700' : (downloading ? 'bg-yellow-600 hover:bg-yellow-700' : 'bg-blue-600 hover:bg-blue-700')"
-                            :disabled="downloading"
-                            class="flex items-center justify-center w-10 h-10 text-white rounded-full transition-colors relative group">
-                        
-                        <!-- Download Icon (default state) -->
-                        <svg x-show="!downloading && !downloaded" 
-                             class="w-5 h-5" 
-                             fill="none" 
-                             stroke="currentColor" 
-                             viewBox="0 0 24 24">
-                            <path stroke-linecap="round" 
-                                  stroke-linejoin="round" 
-                                  stroke-width="2" 
-                                  d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                        </svg>
-                        
-                        <!-- Loading Spinner (downloading state) -->
-                        <svg x-show="downloading" 
-                             class="animate-spin w-5 h-5" 
-                             fill="none" 
-                             viewBox="0 0 24 24">
-                            <circle class="opacity-25" 
-                                    cx="12" 
-                                    cy="12" 
-                                    r="10" 
-                                    stroke="currentColor" 
-                                    stroke-width="4">
-                            </circle>
-                            <path class="opacity-75" 
-                                  fill="currentColor" 
-                                  d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                            </path>
-                        </svg>
-                        
-                        <!-- Check Mark (downloaded state) -->
-                        <svg x-show="downloaded" 
-                             class="w-5 h-5" 
-                             fill="none" 
-                             stroke="currentColor" 
-                             viewBox="0 0 24 24">
-                            <path stroke-linecap="round" 
-                                  stroke-linejoin="round" 
-                                  stroke-width="2" 
-                                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                        </svg>
-                        
-                        <!-- Tooltip -->
-                        <span class="absolute -bottom-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap"
-                              x-text="downloaded ? 'Downloaded!' : (downloading ? 'Downloading...' : 'Download Resume')">
-                        </span>
-                    </button>
+                    <div x-data="{
+                        downloading: false,
+                        downloaded: false,
+                        downloadResume() {
+                            this.downloading = true;
+                            
+                            const link = document.createElement('a');
+                            link.href = '/resume';
+                            link.download = 'Zachariah_Kordas_Potter_Resume.pdf';
+                            link.style.display = 'none';
+                            
+                            document.body.appendChild(link);
+                            link.click();
+                            document.body.removeChild(link);
+                            
+                            this.downloading = false;
+                            this.downloaded = true;
+                            
+                            setTimeout(() => { this.downloaded = false }, 15000);
+                        }
+                    }">
+                        <button @click="downloadResume()"
+                                :class="downloaded ? 'bg-green-600 hover:bg-green-700' : (downloading ? 'bg-yellow-600 hover:bg-yellow-700' : 'bg-blue-600 hover:bg-blue-700')"
+                                :disabled="downloading"
+                                class="social-button flex items-center justify-center w-12 h-12 text-white rounded-full transition-colors relative group">
+                            
+                            <svg x-show="!downloading && !downloaded" 
+                                 class="w-5 h-5" 
+                                 fill="none" 
+                                 stroke="currentColor" 
+                                 viewBox="0 0 24 24">
+                                <path stroke-linecap="round" 
+                                      stroke-linejoin="round" 
+                                      stroke-width="2" 
+                                      d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            </svg>
+                            
+                            <svg x-show="downloading" 
+                                 class="animate-spin w-5 h-5" 
+                                 fill="none" 
+                                 viewBox="0 0 24 24">
+                                <circle class="opacity-25" 
+                                        cx="12" 
+                                        cy="12" 
+                                        r="10" 
+                                        stroke="currentColor" 
+                                        stroke-width="4">
+                                </circle>
+                                <path class="opacity-75" 
+                                      fill="currentColor" 
+                                      d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                </path>
+                            </svg>
+                            
+                            <svg x-show="downloaded" 
+                                 class="w-5 h-5" 
+                                 fill="none" 
+                                 stroke="currentColor" 
+                                 viewBox="0 0 24 24">
+                                <path stroke-linecap="round" 
+                                      stroke-linejoin="round" 
+                                      stroke-width="2" 
+                                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            
+                            <span class="absolute -bottom-10 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10"
+                                  x-text="downloaded ? 'Downloaded!' : (downloading ? 'Downloading...' : 'Resume')">
+                            </span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </header>
 
-        <!-- About me -->
-        <div class="grid gap-6 columns-2">
-            <p class="flex items-center text-center text-lg mb-6 col-start-1">{{ .aboutMeContent }}</p>
-            <img class="col-start-2 rounded-xl" src="images/zach.jpg" alt="Zachariah Kordas-Potter">
+        <!-- About me - Responsive Layout -->
+        <div class="flex flex-col lg:grid lg:grid-cols-2 gap-6 mt-6">
+            <div class="order-2 lg:order-1">
+                <p class="text-center lg:text-left text-base md:text-lg mb-6">{{ .aboutMeContent }}</p>
+            </div>
+            <div class="order-1 lg:order-2 flex justify-center lg:justify-end">
+                <img class="rounded-xl w-full max-w-sm lg:max-w-full" src="images/zach.jpg" alt="Zachariah Kordas-Potter">
+            </div>
         </div>
 
-        <div class="border lavender-accent mt-5 p-1 items-center justify-center rounded-lg p-1 mb-2 grid w-full grid-cols-2" 
+        <!-- Education/Work Toggle - Mobile Responsive -->
+        <div class="border lavender-accent p-2 items-center justify-center rounded-lg mb-4 mt-6 grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-0" 
              x-data="{ activeTab: 'education' }">
-            <button class="p-1 mr-3 border lavender-accent rounded inline-flex items-center justify-center whitespace-nowrap"
+            <button class="p-3 sm:p-1 sm:mr-3 border lavender-accent rounded inline-flex items-center justify-center whitespace-nowrap text-sm sm:text-base"
                     :class="activeTab === 'education' ? 'toggle-button active' : 'toggle-button'"
                     hx-get="/education-content"
                     hx-target="#experience-content"
@@ -172,7 +178,7 @@
                     @click="activeTab = 'education'">
                 Education
             </button>
-            <button class="p-1 border lavender-accent rounded inline-flex items-center justify-center whitespace-nowrap"
+            <button class="p-3 sm:p-1 border lavender-accent rounded inline-flex items-center justify-center whitespace-nowrap text-sm sm:text-base"
                     :class="activeTab === 'work' ? 'toggle-button active' : 'toggle-button'"
                     hx-get="/work-content"
                     hx-target="#experience-content"
@@ -182,87 +188,87 @@
             </button>
         </div>
     
-        <!-- Content area that gets swapped -->
         <div id="experience-content"></div>
 
-        <!-- Projects -->
-        <h2 id="Project" class="flex justify-center text-xl font-semibold p-6">Projects</h2>
-        <div class="grid gap-4 md:grid-cols-2">
+        <!-- Projects - Mobile Responsive Grid -->
+        <h2 id="Project" class="flex justify-center text-xl md:text-2xl font-semibold p-4 md:p-6">Projects</h2>
+        <div class="grid gap-4 sm:grid-cols-1 lg:grid-cols-2">
             <div class="border lavender-accent rounded p-4 flex flex-col h-full">
                 <div class="flex-grow">
-                    <h3 class="font-bold mb-4 text-center">GoMail</h3>
-                    <img src="images/GoMail.gif" alt="GoMail Project">
-                    <p class="mt-4 mb-4">{{ .projectOneContent }}</p>
+                    <h3 class="font-bold mb-4 text-center text-lg md:text-xl">GoMail</h3>
+                    <img src="images/GoMail.gif" alt="GoMail Project" class="w-full h-auto">
+                    <p class="mt-4 mb-4 text-sm md:text-base">{{ .projectOneContent }}</p>
                 </div>
                 <div class="flex flex-wrap gap-1 mt-auto">
-                    <div class="tech-badge gold-accent">Bubbletea</div> 
-                    <div class="tech-badge gold-accent">Lipgloss</div>  
-                    <div class="tech-badge gold-accent">go-imap</div>   
-                    <div class="tech-badge gold-accent">go-message</div>
-                    <div class="tech-badge gold-accent">fzf</div>       
-                    <div class="tech-badge gold-accent">godotenv</div>  
+                    <div class="tech-badge gold-accent text-xs md:text-sm">Bubbletea</div> 
+                    <div class="tech-badge gold-accent text-xs md:text-sm">Lipgloss</div>  
+                    <div class="tech-badge gold-accent text-xs md:text-sm">go-imap</div>   
+                    <div class="tech-badge gold-accent text-xs md:text-sm">go-message</div>
+                    <div class="tech-badge gold-accent text-xs md:text-sm">fzf</div>       
+                    <div class="tech-badge gold-accent text-xs md:text-sm">godotenv</div>  
                 </div>
             </div>
 
             <div class="border lavender-accent rounded p-4 flex flex-col h-full">
                 <div class="flex-grow">  
-                    <h3 class="font-bold mb-4 text-center">Go-ytm</h3>
-                    <img src="images/go-ytm.gif" alt="go-ytm Project">
-                    <p class="mt-4 mb-4">{{ .projectTwoContent }}</p>
+                    <h3 class="font-bold mb-4 text-center text-lg md:text-xl">Go-ytm</h3>
+                    <img src="images/go-ytm.gif" alt="go-ytm Project" class="w-full h-auto">
+                    <p class="mt-4 mb-4 text-sm md:text-base">{{ .projectTwoContent }}</p>
                 </div>
                 <div class="flex flex-wrap gap-1 mt-auto">
-                    <div class="tech-badge gold-accent">Cobra-cli</div> 
-                    <div class="tech-badge gold-accent">Bubbletea</div>  
-                    <div class="tech-badge gold-accent">Lipgloss</div>
-                    <div class="tech-badge gold-accent">yt-dlp</div>
-                    <div class="tech-badge gold-accent">mpv</div>       
+                    <div class="tech-badge gold-accent text-xs md:text-sm">Cobra-cli</div> 
+                    <div class="tech-badge gold-accent text-xs md:text-sm">Bubbletea</div>  
+                    <div class="tech-badge gold-accent text-xs md:text-sm">Lipgloss</div>
+                    <div class="tech-badge gold-accent text-xs md:text-sm">yt-dlp</div>
+                    <div class="tech-badge gold-accent text-xs md:text-sm">mpv</div>       
                 </div>
             </div>
 
             <div class="border lavender-accent rounded p-4 flex flex-col h-full">
                 <div class="flex-grow">
-                    <h3 class="font-bold mb-4 text-center">Game Recommender</h3>
-                    <img src="images/GameRecommender.png" alt="Game Recommender Project">
-                    <p class="mt-4 mb-4">{{ .projectThreeContent }}</p>
+                    <h3 class="font-bold mb-4 text-center text-lg md:text-xl">Game Recommender</h3>
+                    <img src="images/GameRecommender.png" alt="Game Recommender Project" class="w-full h-auto">
+                    <p class="mt-4 mb-4 text-sm md:text-base">{{ .projectThreeContent }}</p>
                 </div>
                 <div class="flex flex-wrap gap-1 mt-auto">
-                    <div class="tech-badge gold-accent">Python</div>
-                    <div class="tech-badge gold-accent">Flask</div>
-                    <div class="tech-badge gold-accent">Pandas</div>
-                    <div class="tech-badge gold-accent">Scikit-learn</div>
-                    <div class="tech-badge gold-accent">Matplotlib</div>
-                    <div class="tech-badge gold-accent">psutil</div>
+                    <div class="tech-badge gold-accent text-xs md:text-sm">Python</div>
+                    <div class="tech-badge gold-accent text-xs md:text-sm">Flask</div>
+                    <div class="tech-badge gold-accent text-xs md:text-sm">Pandas</div>
+                    <div class="tech-badge gold-accent text-xs md:text-sm">Scikit-learn</div>
+                    <div class="tech-badge gold-accent text-xs md:text-sm">Matplotlib</div>
+                    <div class="tech-badge gold-accent text-xs md:text-sm">psutil</div>
                 </div>
             </div>
 
             <div class="border lavender-accent rounded p-4 flex flex-col h-full">
                 <div class="flex-grow">
-                    <h3 class="font-bold mb-4 text-center">Zach-Dev Website</h3>
-                    <img src="images/portfolioSite.png" alt="Portfolio Website">
-                    <p class="mt-4 mb-4">{{ .projectFourContent }}</p>
+                    <h3 class="font-bold mb-4 text-center text-lg md:text-xl">Zach-Dev Website</h3>
+                    <img src="images/portfolioSite.png" alt="Portfolio Website" class="w-full h-auto">
+                    <p class="mt-4 mb-4 text-sm md:text-base">{{ .projectFourContent }}</p>
                 </div>
                 <div class="flex flex-wrap gap-1 mt-auto">
-                    <div class="tech-badge gold-accent">Golang</div> 
-                    <div class="tech-badge gold-accent">htmx</div>  
-                    <div class="tech-badge gold-accent">alpine.js</div>
-                    <div class="tech-badge gold-accent">Tailwindcss</div>
-                    <div class="tech-badge gold-accent">Gin</div>       
-                    <div class="tech-badge gold-accent">HTML</div>  
+                    <div class="tech-badge gold-accent text-xs md:text-sm">Golang</div> 
+                    <div class="tech-badge gold-accent text-xs md:text-sm">htmx</div>  
+                    <div class="tech-badge gold-accent text-xs md:text-sm">alpine.js</div>
+                    <div class="tech-badge gold-accent text-xs md:text-sm">Tailwindcss</div>
+                    <div class="tech-badge gold-accent text-xs md:text-sm">Gin</div>       
+                    <div class="tech-badge gold-accent text-xs md:text-sm">HTML</div>  
                 </div>
             </div>
         </div>
 
-        <hr class="m-10">
-        <!-- Footer -->
+        <hr class="mx-4 md:mx-10 my-8">
+        
+        <!-- Mobile-friendly Footer -->
         <footer class="w-full pt-1">
-            <nav class="space-x-10 flex justify-center">
-                <a href="#Home" class="lavender-text">Home</a>
-                <a href="#Project" class="lavender-text">Projects</a>
+            <nav class="flex flex-col sm:flex-row sm:space-x-10 space-y-2 sm:space-y-0 items-center justify-center">
+                <a href="#Home" class="lavender-text py-2 sm:py-0">Home</a>
+                <a href="#Project" class="lavender-text py-2 sm:py-0">Projects</a>
                 <a href="#" 
                    hx-get="/contact-form" 
                    hx-target="#contact-overlay" 
                    hx-swap="innerHTML"
-                   class="lavender-text">Contact</a>
+                   class="lavender-text py-2 sm:py-0">Contact</a>
             </nav>
         </footer>
     </main> 

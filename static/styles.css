@@ -169,3 +169,26 @@
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
 }
+/* Mobile-specific improvements */
+@media (max-width: 768px) {
+    .mobile-nav-item {
+        display: block;
+        text-align: center;
+        padding: 0.75rem;
+        border-bottom: 1px solid rgba(147, 51, 234, 0.2);
+    }
+    
+    .mobile-nav-item:last-child {
+        border-bottom: none;
+    }
+    
+    .tech-badge {
+        font-size: 0.75rem;
+        padding: 0.25rem 0.5rem;
+    }
+}
+/* Ensure touch-friendly button sizes */
+.social-button {
+    min-width: 44px;
+    min-height: 44px;
+}
