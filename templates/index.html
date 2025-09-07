@@ -15,21 +15,74 @@
 <body class="relative h-full w-full bg-gray-950 text-gray-200 font-sans min-h-screen animated-grid">
     <div class="fixed top-0 z-[-2] h-screen w-screen bg-[#000000] bg-[radial-gradient(#ffffff33_1px,#00091d_1px)] bg-[size:20px_20px] animate-diagonal-drift"></div>  
 
-    <!-- Mobile-friendly Navigation -->
-    <header class="flex justify-center shadow p-4 md:p-6">
-        <nav class="flex flex-col sm:flex-row sm:space-x-10 space-y-2 sm:space-y-0 w-full sm:w-auto">
-            <a href="#Home" class="lavender-text text-center py-2 sm:py-0">Home</a>
-            <a href="#Project" class="lavender-text text-center py-2 sm:py-0">Projects</a>
-            <a href="#" 
-               hx-get="/contact-form" 
-               hx-target="#contact-overlay" 
-               hx-swap="innerHTML"
-               class="lavender-text text-center py-2 sm:py-0">Contact</a>
-        </nav>
+    <!-- Desktop & Mobile Navigation -->
+    <header class="fixed top-0 left-0 right-0 z-40 shadow-lg bg-gray-950/80 backdrop-blur-md border-b border-gray-800/50">
+        <!-- Mobile Accordion Menu -->
+        <div class="sm:hidden" x-data="{ open: false }">
+            <!-- Mobile Header Bar -->
+            <div class="flex justify-between items-center p-4">
+                <span class="text-lg font-semibold lavender-text">Zach-Dev</span>
+                <button @click="open = !open" 
+                        class="lavender-text hover:text-purple-300 transition-colors p-2">
+                    <!-- Hamburger Icon -->
+                    <svg x-show="!open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                    <!-- Close Icon -->
+                    <svg x-show="open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Accordion Menu Items -->
+            <div x-show="open" 
+                 x-transition:enter="transition ease-out duration-200"
+                 x-transition:enter-start="opacity-0 transform -translate-y-2"
+                 x-transition:enter-end="opacity-100 transform translate-y-0"
+                 x-transition:leave="transition ease-in duration-150"
+                 x-transition:leave-start="opacity-100 transform translate-y-0"
+                 x-transition:leave-end="opacity-0 transform -translate-y-2"
+                 class="bg-gray-900/95 backdrop-blur-sm border-t border-gray-800/50">
+                <nav class="flex flex-col">
+                    <a href="#Home" 
+                       @click="open = false"
+                       class="lavender-text hover:text-purple-300 hover:bg-gray-800/50 transition-all duration-200 px-6 py-4 border-b border-gray-800/30">
+                        Home
+                    </a>
+                    <a href="#Project" 
+                       @click="open = false"
+                       class="lavender-text hover:text-purple-300 hover:bg-gray-800/50 transition-all duration-200 px-6 py-4 border-b border-gray-800/30">
+                        Projects
+                    </a>
+                    <a href="#" 
+                       @click="open = false"
+                       hx-get="/contact-form" 
+                       hx-target="#contact-overlay" 
+                       hx-swap="innerHTML"
+                       class="lavender-text hover:text-purple-300 hover:bg-gray-800/50 transition-all duration-200 px-6 py-4">
+                        Contact
+                    </a>
+                </nav>
+            </div>
+        </div>
+      
+        <!-- Desktop Navigation (hidden on mobile) -->
+        <div class="hidden sm:flex justify-center p-4 md:p-6">
+            <nav class="flex space-x-10">
+                <a href="#Home" class="lavender-text hover:text-purple-300 transition-colors">Home</a>
+                <a href="#Project" class="lavender-text hover:text-purple-300 transition-colors">Projects</a>
+                <a href="#" 
+                   hx-get="/contact-form" 
+                   hx-target="#contact-overlay" 
+                   hx-swap="innerHTML"
+                   class="lavender-text hover:text-purple-300 transition-colors">Contact</a>
+            </nav>
+        </div>
     </header>
     <hr class="mx-4 md:mx-10">
 
-    <main class="max-w-4xl mx-auto mt-8 md:mt-25 p-4 md:p-6 rounded-xl shadow">
+    <main class="max-w-4xl mx-auto pt-20 md:pt-24 p-6 rounded-xl shadow">
         <!-- About Me - Responsive Layout -->
         <header class="flex flex-col lg:grid lg:grid-cols-2 gap-6">
             <div class="flex flex-col items-center lg:items-start">
