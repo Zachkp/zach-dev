@@ -1,4 +1,4 @@
-/* Professional pastel tech badges */
+/* pastel tech badges */
 .tech-badge {
   display: inline-flex;
   align-items: center;
@@ -21,7 +21,7 @@
   border-color: rgba(168, 162, 158, 0.5);
 }
 
-/* Subtle lavender accent - for special badges */
+/* lavender accent - for special badges */
 .lavender-accent {
   border: 1px solid rgba(196, 181, 253, 0.4);
   box-shadow: 0 0 8px rgba(196, 181, 253, 0.2);
