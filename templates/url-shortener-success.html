@@ -1,0 +1,86 @@
+<!-- Success Message with Shortened URL -->
+<div class="text-center py-8" x-data="{ 
+    shortUrl: '{{ .shortUrl }}',
+    originalUrl: '{{ .originalUrl }}',
+    copied: false,
+    async copyUrl() {
+        try {
+            await navigator.clipboard.writeText(this.shortUrl);
+            this.copied = true;
+            setTimeout(() => { this.copied = false }, 3000);
+        } catch (err) {
+            console.error('Failed to copy: ', err);
+            // Fallback for older browsers
+            const textArea = document.createElement('textarea');
+            textArea.value = this.shortUrl;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            this.copied = true;
+            setTimeout(() => { this.copied = false }, 3000);
+        }
+    }
+}">
+    <div class="mb-6">
+        <svg class="w-16 h-16 mx-auto text-green-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+        <h3 class="text-xl font-semibold text-green-400 mb-4">URL Shortened Successfully!</h3>
+        
+        <!-- Original URL Display -->
+        <div class="mb-4 p-3 bg-gray-800 rounded-lg border border-gray-700">
+            <p class="text-xs text-gray-400 mb-1">Original URL:</p>
+            <p class="text-sm text-gray-300 break-all" x-text="originalUrl"></p>
+        </div>
+        
+        <!-- Shortened URL Display with Copy Feature -->
+        <div class="mb-6 p-4 bg-gradient-to-r from-purple-900/50 to-purple-800/50 rounded-lg border border-purple-500/50">
+            <p class="text-sm text-purple-300 mb-2">Your shortened URL:</p>
+            <div class="flex items-center justify-center gap-3 bg-gray-900 p-3 rounded-lg">
+                <p class="text-lg font-mono text-white break-all" x-text="shortUrl"></p>
+                <button @click="copyUrl()" 
+                        :class="copied ? 'bg-green-600 hover:bg-green-700' : 'bg-purple-600 hover:bg-purple-700'"
+                        class="flex items-center justify-center w-10 h-10 text-white rounded-md transition-colors relative group flex-shrink-0">
+                    <svg x-show="!copied" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                    </svg>
+                    <svg x-show="copied" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    <!-- Tooltip -->
+                    <span class="absolute -bottom-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap"
+                          x-text="copied ? 'Copied!' : 'Copy URL'">
+                    </span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="flex gap-3 justify-center flex-wrap">
+            <a :href="shortUrl" 
+               target="_blank"
+               class="inline-flex items-center justify-center gap-2 h-10 px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md transition-colors">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                </svg>
+                Test Link
+            </a>
+            
+            <button hx-get="/url-shortener" 
+                    hx-target="#url-shortener-content" 
+                    hx-swap="innerHTML"
+                    class="inline-flex items-center justify-center gap-2 h-10 px-6 py-2 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-md transition-colors">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                </svg>
+                Shorten Another
+            </button>
+            
+            <button onclick="document.getElementById('url-shortener-overlay').innerHTML = ''; document.getElementById('url-shortener-overlay').classList.add('hidden');"
+                    class="inline-flex items-center justify-center gap-2 h-10 px-6 py-2 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-md transition-colors">
+                Close
+            </button>
+        </div>
+    </div>
+</div>

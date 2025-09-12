@@ -1,0 +1,91 @@
+<!-- Backdrop -->
+<div class="bg-black bg-opacity-50 backdrop-blur-sm" 
+     onclick="document.getElementById('url-shortener-overlay').innerHTML = ''; document.getElementById('url-shortener-overlay').classList.add('hidden');">
+</div>
+
+<!-- Modal -->
+<div class="flex items-center justify-center min-h-screen p-4">
+    <div class="relative bg-gray-900 rounded-xl shadow-2xl w-full max-w-2xl border border-purple-500/30"
+         onclick="event.stopPropagation();">
+        
+        <!-- Close button -->
+        <button class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors"
+                onclick="document.getElementById('url-shortener-overlay').innerHTML = ''; document.getElementById('url-shortener-overlay').classList.add('hidden');">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+        </button>
+
+        <div class="p-8">
+            <!-- Header -->
+            <div class="text-center mb-8">
+                <h2 class="text-2xl font-bold mb-4 lavender-text">URL Shortener</h2>
+                <p class="text-gray-300 mb-6">
+                    Transform long URLs into short, shareable links. Perfect for social media, 
+                    presentations, or anywhere you need a clean, concise link.
+                </p>
+            </div>
+
+            <!-- URL Shortener Form -->
+            <div id="url-shortener-content" x-data="{ submitting: false }">
+                <form hx-post="/shorten-url" 
+                      hx-target="#url-shortener-content" 
+                      hx-swap="innerHTML"
+                      hx-indicator="#shortening-loading"
+                      @submit="submitting = true"
+                      class="space-y-6">
+
+                    <div id="shortening-loading" class="htmx-indicator text-center py-4">
+                        <div class="inline-flex items-center gap-2 text-purple-400">
+                            <svg class="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            Shortening URL...
+                        </div>
+                    </div>
+                    
+                    <div x-show="!submitting">
+                        <label for="originalUrl" class="block text-sm font-medium mb-2 text-gray-300">Enter URL to Shorten</label>
+                        <div class="relative">
+                            <input id="originalUrl" 
+                                   class="flex h-12 w-full rounded-md border bg-gray-800 border-purple-500/30 px-3 py-3 text-sm text-gray-200 shadow-sm transition-colors focus:ring-2 focus:ring-purple-500 focus:border-transparent pr-12" 
+                                   placeholder="https://example.com/very-long-url-that-needs-shortening" 
+                                   type="url" 
+                                   name="originalUrl" 
+                                   required>
+                            <svg class="absolute right-3 top-3 w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.102m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
+                            </svg>
+                        </div>
+                        <p class="text-xs text-gray-400 mt-1">Enter a valid URL starting with http:// or https://</p>
+                    </div>
+                    
+                    <div class="text-center" x-show="!submitting">
+                        <button class="inline-flex items-center justify-center gap-2 h-12 px-8 py-3 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-md transition-colors focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-gray-900" 
+                                type="submit"
+                                :disabled="submitting">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.102m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
+                            </svg>
+                            <span>Shorten URL</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Show the overlay
+    document.getElementById('url-shortener-overlay').classList.remove('hidden');
+    
+    // Close on Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            document.getElementById('url-shortener-overlay').innerHTML = '';
+            document.getElementById('url-shortener-overlay').classList.add('hidden');
+        }
+    });
+</script>

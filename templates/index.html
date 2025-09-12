@@ -63,6 +63,12 @@
                        class="lavender-text hover:text-purple-300 hover:bg-gray-800/50 transition-all duration-200 px-6 py-4">
                         Contact
                     </a>
+                    <a href="#"
+                    @click="open = false"
+                    hx-get="/url-shortener"
+                    hx-target="#url-shortener-overlay"
+                    hx-swap="innerHTML"
+                    class="lavender-text hover:text-purple-300 hover:bg-gray-800/50 transition-all duration-200 px-6 py-4">ZShort</a>
                 </nav>
             </div>
         </div>
@@ -81,8 +87,7 @@
                     hx-get="/url-shortener"
                     hx-target="#url-shortener-overlay"
                     hx-swap="innerHTML"
-                    class="lavender-text hover:text-purple-300 transition-colors">Url Shortener</a>
-
+                    class="lavender-text hover:text-purple-300 transition-colors">ZShort</a>
             </nav>
         </div>
     </header>

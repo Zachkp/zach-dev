@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Short URL Not Found - Zach-Dev</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+
+<body class="relative h-full w-full bg-gray-950 text-gray-200 font-sans min-h-screen">
+    <div class="fixed top-0 z-[-2] h-screen w-screen bg-[#000000] bg-[radial-gradient(#ffffff33_1px,#00091d_1px)] bg-[size:20px_20px] animate-diagonal-drift"></div>
+
+    <div class="flex items-center justify-center min-h-screen p-4">
+        <div class="text-center max-w-md mx-auto">
+            <!-- 404 Icon -->
+            <svg class="w-24 h-24 mx-auto text-purple-500 mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" 
+                      d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.102m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                      d="M6 18L18 6M6 6l12 12" opacity="0.5"/>
+            </svg>
+            
+            <h1 class="text-6xl font-bold text-purple-400 mb-2">404</h1>
+            <h2 class="text-2xl font-semibold mb-4 text-gray-300">Short URL Not Found</h2>
+            
+            <p class="text-gray-400 mb-8">
+                {{ .message }}<br>
+                The link you're looking for doesn't exist or may have expired.
+            </p>
+            
+            <div class="space-y-4">
+                <a href="/" 
+                   class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-lg transition-colors">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                    </svg>
+                    Go to Homepage
+                </a>
+                
+                <div class="text-sm text-gray-500">
+                    Need help? <a href="/#" onclick="window.location.href='/#'; setTimeout(() => document.querySelector('a[hx-get=\"/contact-form\"]').click(), 100);" class="text-purple-400 hover:text-purple-300 underline">Contact me</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
