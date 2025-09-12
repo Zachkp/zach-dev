@@ -45,7 +45,7 @@ var (
 	institution  = `Western Governors University`
 	startDateEdu = `Sept 2019`
 	endDateEdu   = `May 2023`
-	eduBullet1   = `Graduated Magna Cum Laude with 3.8 GPA"`
+	eduBullet1   = `Graduated with 3.0 GPA`
 	eduBullet2   = `Relevant coursework: Data Structures, Algorithms, Machine Learning`
 	eduBullet3   = `Senior Capstone project: Machine Learning recommendation system`
 
