@@ -2,8 +2,51 @@
 explanations.md
 
 ignore/
-tmp/
-/tmp/
-.env
-
 TODO.md
+
+
+# Existing Go gitignore entries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+go.work
+
+# Database files - DON'T commit these
+urls.db
+urls.db-journal
+urls.db-wal
+urls.db-shm
+*.db
+*.sqlite
+*.sqlite3
+
+# Environment files
+.env
+.env.local
+
+# Log files
+*.log
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Temporary files
+tmp/
+temp/
