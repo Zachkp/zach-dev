@@ -36,6 +36,13 @@ func main() {
 		})
 	})
 
+	// HTMX Url Shortener endpoint
+	r.GET("/url-shortener", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "urlShort.html", gin.H{
+			"title": "URL Shortener",
+		})
+	})
+
 	r.GET("/resume", func(c *gin.Context) {
 		c.Header("Content-Description", "File Transfer")
 		c.Header("Content-Transfer-Encoding", "binary")
