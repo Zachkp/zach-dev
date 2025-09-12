@@ -13,7 +13,7 @@ import (
 	"strings"
 
 	_ "github.com/joho/godotenv/autoload"
-	_ "github.com/mattn/go-sqlite3"
+	_ "modernc.org/sqlite"
 
 	"github.com/gin-gonic/gin"
 )
