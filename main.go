@@ -2,29 +2,35 @@ package main
 
 import (
 	"crypto/rand"
+	"database/sql"
 	"encoding/base64"
 	"fmt"
+	"log"
 	"net/http"
 	"net/smtp"
 	"net/url"
 	"os"
 	"strings"
-	"sync"
 
 	_ "github.com/joho/godotenv/autoload"
+	_ "github.com/mattn/go-sqlite3"
 
 	"github.com/gin-gonic/gin"
 )
 
+// Database connection
+var db *sql.DB
+
 func main() {
+	// Initialize database
+	initDB()
+	defer db.Close()
 
 	r := gin.Default()
 	r.LoadHTMLGlob("templates/*")
 
 	r.Static("/images", "./images")
 	r.Static("/static", "./static")
-
-	setupURLShortenerRoutes(r)
 
 	// Home page route
 	r.GET("/", func(c *gin.Context) {
@@ -49,6 +55,87 @@ func main() {
 		c.HTML(http.StatusOK, "urlShort.html", gin.H{
 			"title": "URL Shortener",
 		})
+	})
+
+	// Handle URL shortening form submission with HTMX
+	r.POST("/shorten-url", func(c *gin.Context) {
+		originalURL := strings.TrimSpace(c.PostForm("originalUrl"))
+
+		// Validate URL
+		if originalURL == "" {
+			c.HTML(http.StatusOK, "url-shortener-error.html", gin.H{
+				"error": "Please enter a URL to shorten.",
+			})
+			return
+		}
+
+		// Parse and validate URL format
+		parsedURL, err := url.Parse(originalURL)
+		if err != nil || (parsedURL.Scheme != "http" && parsedURL.Scheme != "https") {
+			c.HTML(http.StatusOK, "url-shortener-error.html", gin.H{
+				"error": "Please enter a valid URL starting with http:// or https://",
+			})
+			return
+		}
+
+		// Generate short code
+		shortCode, err := generateShortCode()
+		if err != nil {
+			c.HTML(http.StatusOK, "url-shortener-error.html", gin.H{
+				"error": "Sorry, there was an error generating the short URL. Please try again.",
+			})
+			return
+		}
+
+		// Save to database
+		err = saveURL(shortCode, originalURL)
+		if err != nil {
+			log.Printf("Error saving URL: %v", err)
+			c.HTML(http.StatusOK, "url-shortener-error.html", gin.H{
+				"error": "Sorry, there was an error saving the short URL. Please try again.",
+			})
+			return
+		}
+
+		// Build the shortened URL - use localhost for development, current domain for production
+		var shortURL string
+		if gin.Mode() == gin.DebugMode || strings.Contains(c.Request.Host, "localhost") || strings.Contains(c.Request.Host, "127.0.0.1") {
+			// Development mode - use current host
+			scheme := "http"
+			if c.Request.TLS != nil {
+				scheme = "https"
+			}
+			shortURL = fmt.Sprintf("%s://%s/s/%s", scheme, c.Request.Host, shortCode)
+		} else {
+			// Production mode - use current domain for now
+			// TODO: Replace with custom domain once purchased (e.g., "zkp.dev")
+			scheme := "https" // Render uses HTTPS
+			shortURL = fmt.Sprintf("%s://%s/s/%s", scheme, c.Request.Host, shortCode)
+		}
+
+		// Return success message with the shortened URL
+		c.HTML(http.StatusOK, "url-shortener-success.html", gin.H{
+			"shortUrl":    shortURL,
+			"originalUrl": originalURL,
+		})
+	})
+
+	// Handle shortened URL redirects
+	r.GET("/s/:code", func(c *gin.Context) {
+		shortCode := c.Param("code")
+
+		// Get original URL from database
+		originalURL, exists := getURL(shortCode)
+		if !exists {
+			// Return a 404 page
+			c.HTML(http.StatusNotFound, "404.html", gin.H{
+				"message": "Short URL not found",
+			})
+			return
+		}
+
+		// Redirect to the original URL
+		c.Redirect(http.StatusFound, originalURL)
 	})
 
 	r.GET("/resume", func(c *gin.Context) {
@@ -140,83 +227,54 @@ func main() {
 	r.Run(":" + port)
 }
 
-// URL mapping storage (in production, use a database)
-type URLStore struct {
-	urls map[string]string // shortCode -> originalURL
-	mu   sync.RWMutex
+// Initialize SQLite database
+func initDB() {
+	var err error
+	db, err = sql.Open("sqlite3", "./urls.db")
+	if err != nil {
+		log.Fatal("Failed to open database:", err)
+	}
+
+	// Test the connection
+	err = db.Ping()
+	if err != nil {
+		log.Fatal("Failed to ping database:", err)
+	}
+
+	// Create table if it doesn't exist
+	createTable := `
+	CREATE TABLE IF NOT EXISTS urls (
+		short_code TEXT PRIMARY KEY,
+		original_url TEXT NOT NULL,
+		created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+	)`
+
+	_, err = db.Exec(createTable)
+	if err != nil {
+		log.Fatal("Failed to create table:", err)
+	}
+
+	log.Println("Database initialized successfully")
 }
 
-var urlStore = &URLStore{
-	urls: make(map[string]string),
+// Save URL mapping to database
+func saveURL(shortCode, originalURL string) error {
+	_, err := db.Exec("INSERT INTO urls (short_code, original_url) VALUES (?, ?)", shortCode, originalURL)
+	return err
 }
 
-// Add these new route handlers to your existing main() function:
-
-func setupURLShortenerRoutes(r *gin.Engine) {
-	// Handle URL shortening form submission with HTMX
-	r.POST("/shorten-url", func(c *gin.Context) {
-		originalURL := strings.TrimSpace(c.PostForm("originalUrl"))
-
-		// Validate URL
-		if originalURL == "" {
-			c.HTML(http.StatusOK, "url-shortener-error.html", gin.H{
-				"error": "Please enter a URL to shorten.",
-			})
-			return
+// Get original URL from database
+func getURL(shortCode string) (string, bool) {
+	var originalURL string
+	err := db.QueryRow("SELECT original_url FROM urls WHERE short_code = ?", shortCode).Scan(&originalURL)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return "", false
 		}
-
-		// Parse and validate URL format
-		parsedURL, err := url.Parse(originalURL)
-		if err != nil || (parsedURL.Scheme != "http" && parsedURL.Scheme != "https") {
-			c.HTML(http.StatusOK, "url-shortener-error.html", gin.H{
-				"error": "Please enter a valid URL starting with http:// or https://",
-			})
-			return
-		}
-
-		// Generate short code
-		shortCode, err := generateShortCode()
-		if err != nil {
-			c.HTML(http.StatusOK, "url-shortener-error.html", gin.H{
-				"error": "Sorry, there was an error generating the short URL. Please try again.",
-			})
-			return
-		}
-
-		// Store the mapping
-		urlStore.mu.Lock()
-		urlStore.urls[shortCode] = originalURL
-		urlStore.mu.Unlock()
-
-		// Build the shortened URL (you can customize the domain)
-		shortURL := fmt.Sprintf("%s://%s/s/%s", getScheme(c), c.Request.Host, shortCode)
-
-		// Return success message with the shortened URL
-		c.HTML(http.StatusOK, "url-shortener-success.html", gin.H{
-			"shortUrl":    shortURL,
-			"originalUrl": originalURL,
-		})
-	})
-
-	// Handle shortened URL redirects
-	r.GET("/s/:code", func(c *gin.Context) {
-		shortCode := c.Param("code")
-
-		urlStore.mu.RLock()
-		originalURL, exists := urlStore.urls[shortCode]
-		urlStore.mu.RUnlock()
-
-		if !exists {
-			// Return a 404 page or redirect to your main site
-			c.HTML(http.StatusNotFound, "404.html", gin.H{
-				"message": "Short URL not found",
-			})
-			return
-		}
-
-		// Redirect to the original URL
-		c.Redirect(http.StatusFound, originalURL)
-	})
+		log.Printf("Database error: %v", err)
+		return "", false
+	}
+	return originalURL, true
 }
 
 // Helper function to generate a random short code
@@ -238,18 +296,6 @@ func generateShortCode() (string, error) {
 	}
 
 	return shortCode, nil
-}
-
-// Helper function to determine the scheme (http or https)
-func getScheme(c *gin.Context) string {
-	if c.Request.TLS != nil {
-		return "https"
-	}
-	// Check for reverse proxy headers
-	if c.GetHeader("X-Forwarded-Proto") == "https" {
-		return "https"
-	}
-	return "http"
 }
 
 func sendContactEmail(name, email, message string) error {
