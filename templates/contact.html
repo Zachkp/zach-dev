@@ -4,7 +4,7 @@
 </div>
 
 <!-- Modal -->
-<div class="flex items-center justify-center min-h-screen p-4">
+<div class="flex items-center justify-center min-h-screen">
     <div class="relative bg-gray-900 rounded-xl shadow-2xl w-full max-w-2xl border border-purple-500/30"
          onclick="event.stopPropagation();">
         
@@ -16,9 +16,9 @@
             </svg>
         </button>
 
-        <div class="p-8">
+        <div class="p-6">
             <!-- Header with social links -->
-            <div class="text-center mb-8">
+            <div class="text-center mb-3">
                 <h2 class="text-2xl font-bold mb-4 lavender-text">Get In Touch</h2>
                 
                 <div class="flex justify-center gap-4 mb-6">
@@ -64,7 +64,7 @@
                     </div>
                 </div>
 
-                <p class="text-gray-300 mb-6">
+                <p class="text-gray-300">
                     I'd love to hear from you! Whether you have a project in mind, want to collaborate, 
                     or just want to say hello, feel free to reach out.
                 </p>
@@ -78,9 +78,9 @@
                       hx-swap="innerHTML"
                       hx-indicator="#loading"
                       @submit="submitting = true"
-                      class="space-y-6">
+                      class="">
 
-                <div id="loading" class="htmx-indicator text-center py-4">
+                <div id="loading" class="htmx-indicator text-center">
                     <div class="inline-flex items-center gap-2 text-purple-400">
                         <svg class="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -90,7 +90,7 @@
                     </div>
                 </div>
                     
-                    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2" x-show="!submitting">
+                    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2" x-show="!submitting">
                         <div>
                             <label for="fullName" class="block text-sm font-medium mb-2 text-gray-300">Name</label>
                             <input id="fullName" 
@@ -112,7 +112,7 @@
                     </div>
                     
                     <div>
-                        <label for="message" class="block text-sm font-medium mb-2 text-gray-300">Message</label>
+                        <label for="message" class="block text-sm font-medium mt-3 mb-2 text-gray-300">Message</label>
                         <textarea class="flex w-full rounded-md border bg-gray-800 border-purple-500/30 min-h-[120px] px-3 py-3 text-sm text-gray-200 shadow-sm transition-colors focus:ring-2 focus:ring-purple-500 focus:border-transparent" 
                                   id="message" 
                                   placeholder="Tell me about your project or just say hello..." 
@@ -121,7 +121,7 @@
                                   required></textarea>
                     </div>
                     
-                    <div class="text-center" x-show="!submitting">
+                    <div class="text-center mt-6" x-show="!submitting">
                         <button class="inline-flex items-center justify-center gap-2 h-12 px-8 py-3 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-md transition-colors focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-gray-900" 
                                 type="submit"
                                 :disabled="submitting">
