@@ -1,3 +1,4 @@
+// main.go - Updated to use separate admin module
 package main
 
 import (
@@ -22,17 +23,25 @@ import (
 var db *sql.DB
 
 func main() {
-	// Initialize database
+	// Initialize database and admin systems
 	initDB()
+	initVisitorTracking() // from admin.go
+	initAdminToken()      // from admin.go
 	defer db.Close()
 
 	r := gin.Default()
 	r.LoadHTMLGlob("templates/*")
 
+	// Add visitor tracking middleware (from admin.go)
+	r.Use(visitorTrackingMiddleware())
+
 	r.Static("/images", "./images")
 	r.Static("/static", "./static")
 
-	// Home page route
+	// Setup admin routes (from admin.go)
+	setupAdminRoutes(r)
+
+	// Your existing routes...
 	r.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.html", gin.H{
 			"aboutMeContent":      AboutMe,
@@ -43,7 +52,7 @@ func main() {
 		})
 	})
 
-	// HTMX Contact form endpoint - returns just the form HTML
+	// HTMX Contact form endpoint
 	r.GET("/contact-form", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "contact.html", gin.H{
 			"title": "Contact Me",
@@ -57,7 +66,7 @@ func main() {
 		})
 	})
 
-	// Handle URL shortening form submission with HTMX
+	// Handle URL shortening form submission
 	r.POST("/shorten-url", func(c *gin.Context) {
 		originalURL := strings.TrimSpace(c.PostForm("originalUrl"))
 
@@ -97,47 +106,42 @@ func main() {
 			return
 		}
 
-		// Build the shortened URL - use localhost for development, current domain for production
+		// Build the shortened URL
 		var shortURL string
 		if gin.Mode() == gin.DebugMode || strings.Contains(c.Request.Host, "localhost") || strings.Contains(c.Request.Host, "127.0.0.1") {
-			// Development mode - use current host
 			scheme := "http"
 			if c.Request.TLS != nil {
 				scheme = "https"
 			}
 			shortURL = fmt.Sprintf("%s://%s/s/%s", scheme, c.Request.Host, shortCode)
 		} else {
-			// Production mode - use current domain for now
-			// TODO: Replace with custom domain once purchased (e.g., "zkp.dev")
-			scheme := "https" // Render uses HTTPS
+			scheme := "https"
 			shortURL = fmt.Sprintf("%s://%s/s/%s", scheme, c.Request.Host, shortCode)
 		}
 
-		// Return success message with the shortened URL
 		c.HTML(http.StatusOK, "url-shortener-success.html", gin.H{
 			"shortUrl":    shortURL,
 			"originalUrl": originalURL,
 		})
 	})
 
-	// Handle shortened URL redirects
+	// Handle shortened URL redirects (with click tracking)
 	r.GET("/s/:code", func(c *gin.Context) {
 		shortCode := c.Param("code")
 
-		// Get original URL from database
+		// Get original URL and increment click count
 		originalURL, exists := getURL(shortCode)
 		if !exists {
-			// Return a 404 page
 			c.HTML(http.StatusNotFound, "404.html", gin.H{
 				"message": "Short URL not found",
 			})
 			return
 		}
 
-		// Redirect to the original URL
 		c.Redirect(http.StatusFound, originalURL)
 	})
 
+	// Resume download
 	r.GET("/resume", func(c *gin.Context) {
 		c.Header("Content-Description", "File Transfer")
 		c.Header("Content-Transfer-Encoding", "binary")
@@ -198,23 +202,20 @@ func main() {
 		})
 	})
 
-	// Handle contact form submission with HTMX
+	// Handle contact form submission
 	r.POST("/contact", func(c *gin.Context) {
 		name := c.PostForm("fullName")
 		email := c.PostForm("email")
 		message := c.PostForm("message")
 
-		// Send email
 		err := sendContactEmail(name, email, message)
 		if err != nil {
-			// Return error message HTML fragment
 			c.HTML(http.StatusOK, "contact-error.html", gin.H{
 				"error": "Sorry, there was an error sending your message. Please try again later.",
 			})
 			return
 		}
 
-		// Return success message HTML fragment
 		c.HTML(http.StatusOK, "contact-success.html", gin.H{
 			"success": "Thank you for your message! I'll get back to you soon.",
 		})
@@ -227,7 +228,7 @@ func main() {
 	r.Run(":" + port)
 }
 
-// Initialize SQLite database
+// Database initialization
 func initDB() {
 	var err error
 	db, err = sql.Open("sqlite", "./urls.db")
@@ -235,13 +236,11 @@ func initDB() {
 		log.Fatal("Failed to open database:", err)
 	}
 
-	// Test the connection
 	err = db.Ping()
 	if err != nil {
 		log.Fatal("Failed to ping database:", err)
 	}
 
-	// Create table if it doesn't exist
 	createTable := `
 	CREATE TABLE IF NOT EXISTS urls (
 		short_code TEXT PRIMARY KEY,
@@ -257,13 +256,13 @@ func initDB() {
 	log.Println("Database initialized successfully")
 }
 
-// Save URL mapping to database
+// Save URL to database
 func saveURL(shortCode, originalURL string) error {
 	_, err := db.Exec("INSERT INTO urls (short_code, original_url) VALUES (?, ?)", shortCode, originalURL)
 	return err
 }
 
-// Get original URL from database
+// Get URL and track clicks (enhanced for admin)
 func getURL(shortCode string) (string, bool) {
 	var originalURL string
 	err := db.QueryRow("SELECT original_url FROM urls WHERE short_code = ?", shortCode).Scan(&originalURL)
@@ -274,23 +273,28 @@ func getURL(shortCode string) (string, bool) {
 		log.Printf("Database error: %v", err)
 		return "", false
 	}
+
+	// Increment click count in background
+	go func() {
+		_, err := db.Exec("UPDATE urls SET clicks = COALESCE(clicks, 0) + 1 WHERE short_code = ?", shortCode)
+		if err != nil {
+			log.Printf("Error updating click count: %v", err)
+		}
+	}()
+
 	return originalURL, true
 }
 
-// Helper function to generate a random short code
+// Generate random short code
 func generateShortCode() (string, error) {
-	// Generate 6 random bytes
 	bytes := make([]byte, 6)
 	_, err := rand.Read(bytes)
 	if err != nil {
 		return "", err
 	}
 
-	// Encode to base64 and clean it up
 	shortCode := base64.URLEncoding.EncodeToString(bytes)
-	// Remove padding and make it URL-safe
 	shortCode = strings.TrimRight(shortCode, "=")
-	// Take first 8 characters to keep it short
 	if len(shortCode) > 8 {
 		shortCode = shortCode[:8]
 	}
@@ -298,15 +302,14 @@ func generateShortCode() (string, error) {
 	return shortCode, nil
 }
 
+// Send contact email
 func sendContactEmail(name, email, message string) error {
-	// Email configuration - use environment variables for security
-	smtpHost := os.Getenv("SMTP_HOST") // e.g., "smtp.gmail.com"
-	smtpPort := os.Getenv("SMTP_PORT") // e.g., "587"
-	smtpUser := os.Getenv("SMTP_USER") // your email
-	smtpPass := os.Getenv("SMTP_PASS") // your app password
-	toEmail := os.Getenv("TO_EMAIL")   // where you want to receive emails
+	smtpHost := os.Getenv("SMTP_HOST")
+	smtpPort := os.Getenv("SMTP_PORT")
+	smtpUser := os.Getenv("SMTP_USER")
+	smtpPass := os.Getenv("SMTP_PASS")
+	toEmail := os.Getenv("TO_EMAIL")
 
-	// Default values for development (remove in production)
 	if smtpHost == "" {
 		smtpHost = "smtp.gmail.com"
 	}
@@ -314,15 +317,13 @@ func sendContactEmail(name, email, message string) error {
 		smtpPort = "587"
 	}
 	if toEmail == "" {
-		toEmail = "zachkordaspotter@gmail.com" // your email
+		toEmail = "zachkordaspotter@gmail.com"
 	}
 
-	// Validate required fields
 	if smtpUser == "" || smtpPass == "" {
 		return fmt.Errorf("SMTP credentials not configured")
 	}
 
-	// Create message
 	subject := fmt.Sprintf("Portfolio Contact: %s", name)
 	body := fmt.Sprintf(`
 New contact form submission from your portfolio:
@@ -336,7 +337,6 @@ Message:
 Sent from your portfolio contact form
 `, name, email, message)
 
-	// Compose email
 	msg := []byte("To: " + toEmail + "\r\n" +
 		"Subject: " + subject + "\r\n" +
 		"From: " + smtpUser + "\r\n" +
@@ -344,10 +344,7 @@ Sent from your portfolio contact form
 		"\r\n" +
 		body + "\r\n")
 
-	// SMTP authentication
 	auth := smtp.PlainAuth("", smtpUser, smtpPass, smtpHost)
-
-	// Send email
 	err := smtp.SendMail(smtpHost+":"+smtpPort, auth, smtpUser, []string{toEmail}, msg)
 	if err != nil {
 		fmt.Printf("Error sending email: %v\n", err)

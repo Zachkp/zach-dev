@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visitor Analytics - Admin</title>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+
+<body class="relative h-full w-full bg-gray-950 text-gray-200 font-sans min-h-screen">
+    <div class="fixed top-0 z-[-2] h-screen w-screen bg-[#000000] bg-[radial-gradient(#ffffff33_1px,#00091d_1px)] bg-[size:20px_20px] animate-diagonal-drift"></div>
+
+    <!-- Admin Navigation -->
+    <header class="bg-gray-950/80 backdrop-blur-md border-b border-gray-800/50 sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-4">
+                    <h1 class="text-xl font-bold lavender-text">Visitor Analytics</h1>
+                    <nav class="flex space-x-4">
+                        <a href="/admin/dashboard" class="lavender-text hover:text-purple-300 transition-colors">Dashboard</a>
+                        <a href="/admin/urls" class="lavender-text hover:text-purple-300 transition-colors">URLs</a>
+                        <a href="/admin/visitors" class="text-purple-300">Visitors</a>
+                    </nav>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="/" class="text-gray-400 hover:text-purple-300 transition-colors">View Site</a>
+                    <a href="/admin/logout" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-sm transition-colors">
+                        Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+        <div class="bg-gray-900 rounded-lg border border-purple-500/30">
+            <div class="p-6">
+                <h2 class="text-lg font-medium lavender-text mb-6">Recent Visitors (Last 200)</h2>
+                
+                <div class="overflow-x-auto">
+                    <table class="min-w-full">
+                        <thead>
+                            <tr class="border-b border-gray-700">
+                                <th class="text-left py-3 px-4 text-gray-300">IP Address</th>
+                                <th class="text-left py-3 px-4 text-gray-300">Path</th>
+                                <th class="text-left py-3 px-4 text-gray-300">User Agent</th>
+                                <th class="text-left py-3 px-4 text-gray-300">Timestamp</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{range .visitors}}
+                            <tr class="border-b border-gray-800 hover:bg-gray-800/50">
+                                <td class="py-3 px-4">
+                                    <span class="font-mono text-purple-400">{{.IP}}</span>
+                                </td>
+                                <td class="py-3 px-4">
+                                    <span class="text-blue-400">{{.Path}}</span>
+                                </td>
+                                <td class="py-3 px-4">
+                                    <div class="max-w-md truncate" title="{{.UserAgent}}">
+                                        <span class="text-gray-300 text-sm">{{.UserAgent}}</span>
+                                    </div>
+                                </td>
+                                <td class="py-3 px-4">
+                                    <span class="text-gray-400">{{.Timestamp.Format "Jan 2, 2006 15:04:05"}}</span>
+                                </td>
+                            </tr>
+                            {{else}}
+                            <tr>
+                                <td colspan="4" class="py-8 px-4 text-center text-gray-400">
+                                    No visitors recorded yet
+                                </td>
+                            </tr>
+                            {{end}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - Zach-Dev</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+
+<body class="relative h-full w-full bg-gray-950 text-gray-200 font-sans min-h-screen">
+    <div class="fixed top-0 z-[-2] h-screen w-screen bg-[#000000] bg-[radial-gradient(#ffffff33_1px,#00091d_1px)] bg-[size:20px_20px] animate-diagonal-drift"></div>
+
+    <div class="flex items-center justify-center min-h-screen p-4">
+        <div class="bg-gray-900 rounded-xl shadow-2xl w-full max-w-md border border-purple-500/30">
+            <div class="p-8">
+                <div class="text-center mb-8">
+                    <h1 class="text-2xl font-bold lavender-text mb-2">Admin Access</h1>
+                    <p class="text-gray-400">Secure area - authorized personnel only</p>
+                </div>
+
+                {{if .error}}
+                <div class="mb-4 p-3 bg-red-900/50 border border-red-500/50 rounded-lg">
+                    <p class="text-red-300 text-sm">{{.error}}</p>
+                </div>
+                {{end}}
+
+                <form method="POST" class="space-y-6">
+                    <div>
+                        <label for="username" class="block text-sm font-medium mb-2 text-gray-300">Username</label>
+                        <input id="username" 
+                               name="username"
+                               class="flex h-12 w-full rounded-md border bg-gray-800 border-purple-500/30 px-3 py-3 text-sm text-gray-200 shadow-sm transition-colors focus:ring-2 focus:ring-purple-500 focus:border-transparent" 
+                               type="text" 
+                               required>
+                    </div>
+
+                    <div>
+                        <label for="password" class="block text-sm font-medium mb-2 text-gray-300">Password</label>
+                        <input id="password" 
+                               name="password"
+                               class="flex h-12 w-full rounded-md border bg-gray-800 border-purple-500/30 px-3 py-3 text-sm text-gray-200 shadow-sm transition-colors focus:ring-2 focus:ring-purple-500 focus:border-transparent" 
+                               type="password" 
+                               required>
+                    </div>
+
+                    <button class="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-3 px-4 rounded-md transition-colors focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-gray-900" 
+                            type="submit">
+                        Login
+                    </button>
+                </form>
+
+                <div class="mt-6 text-center">
+                    <a href="/" class="text-sm text-gray-400 hover:text-purple-300 transition-colors">
+                        ← Back to Site
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
