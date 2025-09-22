@@ -35,6 +35,9 @@ func main() {
 	// Add visitor tracking middleware (from admin.go)
 	r.Use(visitorTrackingMiddleware())
 
+	// Add https redirect for custom domain
+	r.Use(httpsRedirectMiddleware())
+
 	r.Static("/images", "./images")
 	r.Static("/static", "./static")
 
@@ -226,6 +229,18 @@ func main() {
 		port = "8080"
 	}
 	r.Run(":" + port)
+}
+
+func httpsRedirectMiddleware() gin.HandlerFunc {
+	return gin.HandlerFunc(func(c *gin.Context) {
+		if c.GetHeader("X-Forwarded-Proto") == "http" {
+			httpsURL := "https://" + c.Request.Host + c.Request.RequestURI
+			c.Redirect(http.StatusMovedPermanently, httpsURL)
+			c.Abort()
+			return
+		}
+		c.Next()
+	})
 }
 
 // Database initialization
