@@ -1,3 +1,4 @@
+<!-- templates/admin-visitors.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -43,7 +44,7 @@
                     <table class="min-w-full">
                         <thead>
                             <tr class="border-b border-gray-700">
-                                <th class="text-left py-3 px-4 text-gray-300">IP Address</th>
+                                <th class="text-left py-3 px-4 text-gray-300">Hashed IP</th>
                                 <th class="text-left py-3 px-4 text-gray-300">Path</th>
                                 <th class="text-left py-3 px-4 text-gray-300">User Agent</th>
                                 <th class="text-left py-3 px-4 text-gray-300">Timestamp</th>
@@ -53,7 +54,7 @@
                             {{range .visitors}}
                             <tr class="border-b border-gray-800 hover:bg-gray-800/50">
                                 <td class="py-3 px-4">
-                                    <span class="font-mono text-purple-400">{{.IP}}</span>
+                                    <span class="font-mono text-purple-400">{{.HashedIP}}</span>
                                 </td>
                                 <td class="py-3 px-4">
                                     <span class="text-blue-400">{{.Path}}</span>

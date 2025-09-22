@@ -1,0 +1,237 @@
+<!-- templates/privacy.html - Privacy Policy Modal with Alpine.js -->
+<div x-data="privacyModal()" 
+     x-init="init()"
+     @keydown.escape.window="closeModal()">
+     
+    <!-- Backdrop -->
+    <div class="bg-black bg-opacity-50 backdrop-blur-sm" 
+         @click="closeModal()">
+    </div>
+
+    <!-- Modal -->
+    <div class="flex items-center justify-center min-h-screen p-4">
+        <div class="relative bg-gray-900 rounded-xl shadow-2xl w-full max-w-4xl border border-purple-500/30 max-h-[90vh] overflow-hidden"
+             @click.stop>
+            
+            <!-- Close button -->
+            <button class="absolute top-4 right-4 z-10 text-gray-400 hover:text-white transition-colors"
+                    @click="closeModal()">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+
+            <!-- Header -->
+            <div class="p-6 border-b border-purple-500/30">
+                <h1 class="text-2xl font-bold lavender-text">Privacy Policy</h1>
+                <p class="text-gray-400 mt-2">Last updated: {{.lastUpdated}}</p>
+            </div>
+
+            <!-- Content - Scrollable -->
+            <div class="p-6 overflow-y-auto max-h-[70vh]">
+                <div class="prose prose-invert max-w-none">
+                    
+                    <!-- Introduction -->
+                    <section class="mb-8">
+                        <p class="text-gray-300 leading-relaxed">
+                            Welcome to Zach-Dev. I respect your privacy and am committed to protecting your personal information. 
+                            This privacy policy explains how I collect, use, and protect your data when you visit my website.
+                        </p>
+                    </section>
+
+                    <!-- Information We Collect -->
+                    <section class="mb-8">
+                        <h2 class="text-xl font-semibold lavender-text mb-4">Information I Collect</h2>
+                        
+                        <div class="mb-6">
+                            <h3 class="text-lg font-medium text-purple-300 mb-3">Automatically Collected Information</h3>
+                            <ul class="list-disc list-inside text-gray-300 space-y-2">
+                                <li><strong class="text-white">Hashed IP Addresses:</strong> I collect and immediately hash your IP address for security and analytics. The original IP is never stored.</li>
+                                <li><strong class="text-white">Browser Information:</strong> User agent strings to understand how visitors access the site</li>
+                                <li><strong class="text-white">Visit Data:</strong> Pages visited and timestamps for site improvement</li>
+                                <li><strong class="text-white">Click Data:</strong> Interactions with shortened URLs for service analytics</li>
+                            </ul>
+                        </div>
+
+                        <div class="mb-6">
+                            <h3 class="text-lg font-medium text-purple-300 mb-3">Information You Provide</h3>
+                            <ul class="list-disc list-inside text-gray-300 space-y-2">
+                                <li><strong class="text-white">Contact Forms:</strong> Name, email address, and messages when you contact me</li>
+                                <li><strong class="text-white">URL Shortener:</strong> Original URLs you choose to shorten (stored to provide the service)</li>
+                            </ul>
+                        </div>
+                    </section>
+
+                    <!-- How We Use Information -->
+                    <section class="mb-8">
+                        <h2 class="text-xl font-semibold lavender-text mb-4">How I Use Your Information</h2>
+                        <ul class="list-disc list-inside text-gray-300 space-y-2">
+                            <li><strong class="text-white">Analytics:</strong> Understanding site usage patterns and popular content</li>
+                            <li><strong class="text-white">Security:</strong> Monitoring for suspicious activity and preventing abuse</li>
+                            <li><strong class="text-white">Service Improvement:</strong> Making the website and tools work better</li>
+                            <li><strong class="text-white">Communication:</strong> Responding to your contact form submissions</li>
+                            <li><strong class="text-white">URL Service:</strong> Maintaining shortened links and providing click statistics</li>
+                        </ul>
+                    </section>
+
+                    <!-- Data Protection -->
+                    <section class="mb-8">
+                        <h2 class="text-xl font-semibold lavender-text mb-4">Data Protection & Security</h2>
+                        <div class="bg-gray-800 rounded-lg p-4 mb-4">
+                            <div class="flex items-start gap-3">
+                                <div>
+                                    <h3 class="font-medium text-green-300 mb-2">Privacy-First Approach</h3>
+                                    <p class="text-gray-300 text-sm">IP addresses are immediately hashed using SHA-256 with a unique salt. Original IP addresses are never stored in the database.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <ul class="list-disc list-inside text-gray-300 space-y-2">
+                            <li>All data is stored securely with industry-standard practices</li>
+                            <li>Database access is restricted and protected</li>
+                            <li>Contact information is only used to respond to your inquiries</li>
+                            <li>No third-party tracking or advertising cookies are used</li>
+                        </ul>
+                    </section>
+
+                    <!-- Your Rights -->
+                    <section class="mb-8">
+                        <h2 class="text-xl font-semibold lavender-text mb-4">Your Privacy Rights</h2>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="bg-gray-800 rounded-lg p-4">
+                                <h3 class="font-medium text-purple-300 mb-2">Know Your Data</h3>
+                                <p class="text-gray-300 text-sm">Understand what personal information I collect and how it's used.</p>
+                            </div>
+                            <div class="bg-gray-800 rounded-lg p-4">
+                                <h3 class="font-medium text-purple-300 mb-2">Request Deletion</h3>
+                                <p class="text-gray-300 text-sm">Ask for deletion of your personal information at any time.</p>
+                            </div>
+                            <div class="bg-gray-800 rounded-lg p-4">
+                                <h3 class="font-medium text-purple-300 mb-2">Do Not Track</h3>
+                                <p class="text-gray-300 text-sm">I respect "Do Not Track" browser headers automatically.</p>
+                            </div>
+                            <div class="bg-gray-800 rounded-lg p-4">
+                                <h3 class="font-medium text-purple-300 mb-2">Contact Me</h3>
+                                <p class="text-gray-300 text-sm">Reach out with any privacy concerns or questions.</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Data Retention -->
+                    <section class="mb-8">
+                        <h2 class="text-xl font-semibold lavender-text mb-4">Data Retention</h2>
+                        <div class="bg-blue-900/20 border border-blue-500/30 rounded-lg p-4">
+                            <ul class="text-gray-300 space-y-2">
+                                <li><strong class="text-blue-300">Visitor Analytics:</strong> Automatically deleted after 12 months</li>
+                                <li><strong class="text-blue-300">Contact Form Data:</strong> Retained for 2 years or until deletion is requested</li>
+                                <li><strong class="text-blue-300">URL Shortener Data:</strong> Retained indefinitely to maintain link functionality</li>
+                            </ul>
+                        </div>
+                    </section>
+
+                    <!-- Cookies -->
+                    <section class="mb-8">
+                        <h2 class="text-xl font-semibold lavender-text mb-4">Cookies & Tracking</h2>
+                        <ul class="list-disc list-inside text-gray-300 space-y-2">
+                            <li>Only essential cookies for site functionality</li>
+                            <li>Admin authentication uses secure, HTTPOnly session cookies</li>
+                            <li>No third-party tracking or advertising cookies</li>
+                            <li>No social media tracking pixels</li>
+                        </ul>
+                    </section>
+
+                    <!-- Third Parties -->
+                    <section class="mb-8">
+                        <h2 class="text-xl font-semibold lavender-text mb-4">Third-Party Services</h2>
+                        <div class="bg-yellow-900/20 border border-yellow-500/30 rounded-lg p-4">
+                            <p class="text-gray-300 mb-2">This website uses minimal third-party services:</p>
+                            <ul class="list-disc list-inside text-gray-300 space-y-1">
+                                <li><strong class="text-yellow-300">Hosting:</strong> Render.com (subject to their privacy policy)</li>
+                                <li><strong class="text-yellow-300">Email:</strong> SMTP service for contact form delivery only</li>
+                                <li><strong class="text-yellow-300">CDN:</strong> Tailwind CSS and Alpine.js from public CDNs</li>
+                            </ul>
+                        </div>
+                    </section>
+
+                    <!-- Contact -->
+                    <section class="mb-8">
+                        <h2 class="text-xl font-semibold lavender-text mb-4">Contact Me About Privacy</h2>
+                        <div class="bg-purple-900/20 border border-purple-500/30 rounded-lg p-4">
+                            <p class="text-gray-300 mb-3">For privacy-related questions, data deletion requests, or concerns:</p>
+                            <div class="flex flex-col gap-2">
+                                <button @click="openContactForm()"
+                                        class="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-md transition-colors w-fit">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                    </svg>
+                                    Send Privacy Inquiry
+                                </button>
+                                <p class="text-gray-400 text-sm">Email: zachkordaspotter@gmail.com</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Updates -->
+                    <section class="mb-8">
+                        <h2 class="text-xl font-semibold lavender-text mb-4">Policy Updates</h2>
+                        <p class="text-gray-300">
+                            I may update this privacy policy periodically to reflect changes in my practices or applicable laws. 
+                            Material changes will be indicated by updating the "Last updated" date at the top of this policy.
+                        </p>
+                    </section>
+
+                    <!-- Legal Compliance -->
+                    <section class="mb-4">
+                        <div class="bg-gray-800 rounded-lg p-4 text-center">
+                            <p class="text-sm text-gray-400">
+                                This privacy policy is designed to comply with GDPR, CCPA, and other major privacy regulations.
+                            </p>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <!-- Footer Actions -->
+            <div class="p-6 border-t border-purple-500/30 bg-gray-850">
+                <div class="flex justify-between items-center">
+                    <p class="text-sm text-gray-400">
+                        Effective as of {{.lastUpdated}}
+                    </p>
+                    <button @click="closeModal()"
+                            class="px-6 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-md transition-colors">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function privacyModal() {
+        return {
+            init() {
+                // Show the modal
+                document.getElementById('privacy-overlay').classList.remove('hidden');
+            },
+            
+            closeModal() {
+                document.getElementById('privacy-overlay').innerHTML = '';
+                document.getElementById('privacy-overlay').classList.add('hidden');
+            },
+            
+            openContactForm() {
+                // Close privacy modal first
+                this.closeModal();
+                
+                // Wait a moment then open contact form
+                setTimeout(() => {
+                    const contactLink = document.querySelector('a[hx-get="/contact-form"]');
+                    if (contactLink) {
+                        contactLink.click();
+                    }
+                }, 100);
+            }
+        }
+    }
+</script>

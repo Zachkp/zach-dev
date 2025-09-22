@@ -1,3 +1,4 @@
+<!-- templates/admin-dashboard.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -101,7 +102,7 @@
                         {{range .stats.RecentVisitors}}
                         <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
                             <div class="flex-1 min-w-0">
-                                <p class="text-sm font-medium text-white">{{.IP}}</p>
+                                <p class="text-sm font-medium text-white">{{.HashedIP}}</p>
                                 <p class="text-xs text-gray-400">{{.Path}}</p>
                             </div>
                             <p class="text-xs text-gray-500">{{.Timestamp.Format "15:04"}}</p>
