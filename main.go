@@ -111,15 +111,16 @@ func main() {
 
 		// Build the shortened URL
 		var shortURL string
-		if gin.Mode() == gin.DebugMode || strings.Contains(c.Request.Host, "localhost") || strings.Contains(c.Request.Host, "127.0.0.1") {
+		if gin.Mode() == gin.DebugMode || strings.Contains(c.Request.Host, "localhost") {
+			// Development
 			scheme := "http"
 			if c.Request.TLS != nil {
 				scheme = "https"
 			}
 			shortURL = fmt.Sprintf("%s://%s/s/%s", scheme, c.Request.Host, shortCode)
 		} else {
-			scheme := "https"
-			shortURL = fmt.Sprintf("%s://%s/s/%s", scheme, c.Request.Host, shortCode)
+			// Production - use your custom domain
+			shortURL = fmt.Sprintf("https://zachkp.dev/s/%s", shortCode)
 		}
 
 		c.HTML(http.StatusOK, "url-shortener-success.html", gin.H{
@@ -233,11 +234,14 @@ func main() {
 
 func httpsRedirectMiddleware() gin.HandlerFunc {
 	return gin.HandlerFunc(func(c *gin.Context) {
-		if c.GetHeader("X-Forwarded-Proto") == "http" {
-			httpsURL := "https://" + c.Request.Host + c.Request.RequestURI
-			c.Redirect(http.StatusMovedPermanently, httpsURL)
-			c.Abort()
-			return
+		// In production, force HTTPS
+		if gin.Mode() == gin.ReleaseMode {
+			if c.GetHeader("X-Forwarded-Proto") == "http" {
+				httpsURL := "https://" + c.Request.Host + c.Request.RequestURI
+				c.Redirect(http.StatusMovedPermanently, httpsURL)
+				c.Abort()
+				return
+			}
 		}
 		c.Next()
 	})
