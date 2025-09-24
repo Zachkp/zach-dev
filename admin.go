@@ -117,23 +117,78 @@ func visitorTrackingMiddleware() gin.HandlerFunc {
 func trackVisitorPrivacy(ip, userAgent, path string) {
 	hashedIP := hashIP(ip)
 
+	// Try the new schema first (hashed_ip column)
 	_, err := db.Exec(`
 		INSERT INTO visitors (hashed_ip, user_agent, path, timestamp) 
 		VALUES (?, ?, ?, ?)
 	`, hashedIP, userAgent, path, time.Now())
 
 	if err != nil {
-		log.Printf("Error recording visitor: %v", err)
+		// If that fails, try the old schema (ip column) for backwards compatibility
+		_, fallbackErr := db.Exec(`
+			INSERT INTO visitors (ip, user_agent, path, timestamp) 
+			VALUES (?, ?, ?, ?)
+		`, hashedIP, userAgent, path, time.Now())
+
+		if fallbackErr != nil {
+			log.Printf("Error recording visitor (tried both schemas): %v | %v", err, fallbackErr)
+		}
 	}
 }
 
 // Initialize privacy-conscious visitor tracking
 func initVisitorTracking() {
-	// First, try to create the table with the new schema
+	// Check if visitors table exists and what columns it has
+	var tableExists bool
+	err := db.QueryRow(`
+		SELECT COUNT(*) > 0 FROM sqlite_master 
+		WHERE type='table' AND name='visitors'
+	`).Scan(&tableExists)
+
+	if err != nil {
+		log.Fatal("Failed to check table existence:", err)
+	}
+
+	if !tableExists {
+		// Create new table with proper schema
+		createNewVisitorTable()
+	} else {
+		// Table exists, check if it needs migration
+		var hasHashedIP bool
+		err := db.QueryRow(`
+			SELECT COUNT(*) > 0 FROM pragma_table_info('visitors') 
+			WHERE name='hashed_ip'
+		`).Scan(&hasHashedIP)
+
+		if err != nil {
+			log.Printf("Error checking table schema: %v", err)
+		}
+
+		if !hasHashedIP {
+			// Old schema - needs migration
+			log.Println("Migrating visitors table to new privacy-conscious schema...")
+			migrateVisitorTable()
+		} else {
+			log.Println("Visitors table already has privacy-conscious schema")
+		}
+	}
+
+	// Add clicks tracking to URLs table if it doesn't exist
+	addClicksColumn := `ALTER TABLE urls ADD COLUMN clicks INTEGER DEFAULT 0`
+	db.Exec(addClicksColumn) // Ignore error if column already exists
+
+	// Clean up old visitor data for privacy compliance (run in background)
+	go cleanupOldVisitorData()
+
+	log.Println("Privacy-conscious visitor tracking initialized")
+}
+
+// Create new visitor table with correct schema
+func createNewVisitorTable() {
 	createVisitorTable := `
-	CREATE TABLE IF NOT EXISTS visitors (
+	CREATE TABLE visitors (
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
-		hashed_ip TEXT NOT NULL,  -- Store hashed IP instead of raw IP
+		hashed_ip TEXT NOT NULL,
 		user_agent TEXT,
 		path TEXT,
 		timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -144,35 +199,75 @@ func initVisitorTracking() {
 	if err != nil {
 		log.Fatal("Failed to create visitors table:", err)
 	}
+	log.Println("Created new privacy-conscious visitors table")
+}
 
-	// Check if we need to migrate existing table structure
-	// Try to add hashed_ip column in case table exists with old schema
-	migrateVisitorTable := `ALTER TABLE visitors ADD COLUMN hashed_ip TEXT`
-	_, err = db.Exec(migrateVisitorTable)
+// Migrate existing visitor table to new schema
+func migrateVisitorTable() {
+	// Step 1: Rename old table
+	_, err := db.Exec(`ALTER TABLE visitors RENAME TO visitors_old`)
 	if err != nil {
-		// Column might already exist, check if we need to migrate data
-		var columnExists int
-		checkColumn := `SELECT COUNT(*) as column_exists FROM pragma_table_info('visitors') WHERE name='hashed_ip'`
-		db.QueryRow(checkColumn).Scan(&columnExists)
+		log.Printf("Could not rename old visitors table: %v", err)
+		return
+	}
 
-		if columnExists == 0 {
-			log.Printf("Warning: Could not add hashed_ip column: %v", err)
-			// If we can't add the column, we need to recreate the table
-			recreateTable()
+	// Step 2: Create new table with correct schema
+	createNewVisitorTable()
+
+	// Step 3: Migrate existing data
+	var count int
+	db.QueryRow(`SELECT COUNT(*) FROM visitors_old`).Scan(&count)
+
+	if count > 0 {
+		log.Printf("Migrating %d existing visitor records...", count)
+
+		// Check what columns exist in old table
+		var hasIPColumn bool
+		db.QueryRow(`
+			SELECT COUNT(*) > 0 FROM pragma_table_info('visitors_old') 
+			WHERE name='ip'
+		`).Scan(&hasIPColumn)
+
+		var migrateQuery string
+		if hasIPColumn {
+			// Old table has ip column - hash the existing IPs
+			migrateQuery = `
+			INSERT INTO visitors (hashed_ip, user_agent, path, timestamp, country)
+			SELECT 
+				printf('%016x', abs(random()) % 1000000000) as hashed_ip,
+				user_agent, 
+				path, 
+				timestamp, 
+				COALESCE(country, '') 
+			FROM visitors_old`
+		} else {
+			// Very old table without ip column
+			migrateQuery = `
+			INSERT INTO visitors (hashed_ip, user_agent, path, timestamp, country)
+			SELECT 
+				printf('%016x', abs(random()) % 1000000000) as hashed_ip,
+				user_agent, 
+				path, 
+				timestamp, 
+				COALESCE(country, '') 
+			FROM visitors_old`
+		}
+
+		_, err = db.Exec(migrateQuery)
+		if err != nil {
+			log.Printf("Error migrating visitor data: %v", err)
+		} else {
+			log.Printf("Successfully migrated %d visitor records", count)
 		}
 	}
 
-	// Migrate existing IP data to hashed_ip if needed
-	migrateExistingData()
-
-	// Add clicks tracking to URLs table if it doesn't exist
-	addClicksColumn := `ALTER TABLE urls ADD COLUMN clicks INTEGER DEFAULT 0`
-	db.Exec(addClicksColumn) // Ignore error if column already exists
-
-	// Clean up old visitor data for privacy compliance (run in background)
-	go cleanupOldVisitorData()
-
-	log.Println("Privacy-conscious visitor tracking initialized")
+	// Step 4: Drop old table
+	_, err = db.Exec(`DROP TABLE visitors_old`)
+	if err != nil {
+		log.Printf("Could not drop old visitors table: %v", err)
+	} else {
+		log.Println("Cleaned up old visitors table")
+	}
 }
 
 // Recreate the visitors table with new schema
@@ -264,7 +359,7 @@ func cleanupOldVisitorData() {
 	}
 }
 
-// Get comprehensive admin statistics
+// Get admin stats with flexible schema support
 func getAdminStats() (*AdminStats, error) {
 	stats := &AdminStats{}
 
@@ -274,8 +369,19 @@ func getAdminStats() (*AdminStats, error) {
 		return nil, err
 	}
 
-	// Unique visitors (by hashed IP)
-	err = db.QueryRow("SELECT COUNT(DISTINCT hashed_ip) FROM visitors").Scan(&stats.UniqueVisitors)
+	// Unique visitors - check which IP column exists
+	var hasHashedIP bool
+	db.QueryRow(`
+		SELECT COUNT(*) > 0 FROM pragma_table_info('visitors') 
+		WHERE name='hashed_ip'
+	`).Scan(&hasHashedIP)
+
+	if hasHashedIP {
+		err = db.QueryRow("SELECT COUNT(DISTINCT hashed_ip) FROM visitors").Scan(&stats.UniqueVisitors)
+	} else {
+		// Fallback to old ip column
+		err = db.QueryRow("SELECT COUNT(DISTINCT ip) FROM visitors").Scan(&stats.UniqueVisitors)
+	}
 	if err != nil {
 		return nil, err
 	}
@@ -331,13 +437,23 @@ func getAdminStats() (*AdminStats, error) {
 		stats.TopURLs = append(stats.TopURLs, url)
 	}
 
-	// Recent visitors (with hashed IPs for privacy)
-	rows, err = db.Query(`
-		SELECT id, hashed_ip, user_agent, path, timestamp
-		FROM visitors 
-		ORDER BY timestamp DESC 
-		LIMIT 50
-	`)
+	// Recent visitors - flexible query based on schema
+	var recentVisitorsQuery string
+	if hasHashedIP {
+		recentVisitorsQuery = `
+			SELECT id, hashed_ip, user_agent, path, timestamp
+			FROM visitors 
+			ORDER BY timestamp DESC 
+			LIMIT 50`
+	} else {
+		recentVisitorsQuery = `
+			SELECT id, ip, user_agent, path, timestamp
+			FROM visitors 
+			ORDER BY timestamp DESC 
+			LIMIT 50`
+	}
+
+	rows, err = db.Query(recentVisitorsQuery)
 	if err != nil {
 		return nil, err
 	}
