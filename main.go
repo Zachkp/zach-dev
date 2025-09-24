@@ -125,10 +125,10 @@ func main() {
 		// Build the shortened URL
 		var shortURL string
 		if gin.Mode() == gin.DebugMode || strings.Contains(c.Request.Host, "localhost") {
-			// Development
-			scheme := "http"
-			if c.Request.TLS != nil {
-				scheme = "https"
+			// Development - prefer HTTPS, fallback to HTTP for localhost
+			scheme := "https"
+			if strings.Contains(c.Request.Host, "localhost") && c.Request.TLS == nil {
+				scheme = "http"
 			}
 			shortURL = fmt.Sprintf("%s://%s/s/%s", scheme, c.Request.Host, shortCode)
 		} else {
