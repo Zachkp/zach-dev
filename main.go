@@ -358,16 +358,18 @@ func sendContactEmail(name, email, message string) error {
 
 	subject := fmt.Sprintf("Portfolio Contact: %s", name)
 	body := fmt.Sprintf(`
-New contact form submission from your portfolio:
+		New contact form submission from your portfolio:
 
-Name: %s
-Email: %s
-Message:
-%s
+		Name: %s
+		Email: %s
 
----
-Sent from your portfolio contact form
-`, name, email, message)
+		Message:
+
+		%s
+
+		---
+		Sent from your zachkp.dev contact form
+		`, name, email, message)
 
 	msg := []byte("To: " + toEmail + "\r\n" +
 		"Subject: " + subject + "\r\n" +
