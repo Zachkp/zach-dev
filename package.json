@@ -1,0 +1,11 @@
+{
+  "name": "zach-dev",
+  "scripts": {
+    "build:css": "tailwindcss -i ./static/input.css -o ./static/styles.css --minify",
+    "dev:css": "tailwindcss -i ./static/input.css -o ./static/styles.css --watch",
+    "build": "npm run build:css"
+  },
+  "devDependencies": {
+    "tailwindcss": "^4.1.13"
+  }
+}

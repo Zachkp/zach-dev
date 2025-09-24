@@ -1,9 +1,20 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
+/* Custom animations */
+@keyframes diagonal-drift {
+  0% { 
+    background-position: 0 0; 
+  }
+  100% { 
+    background-position: 40px 40px; 
+  }
+}
 
-/* pastel tech badges */
+.animate-diagonal-drift {
+  animation: diagonal-drift 5s linear infinite;
+}
+
+/* Tech badges */
 .tech-badge {
   display: inline-flex;
   align-items: center;
@@ -26,7 +37,7 @@
   border-color: rgba(168, 162, 158, 0.5);
 }
 
-/* lavender accent - for special badges */
+/* Accent colors - only keeping used ones */
 .lavender-accent {
   border: 1px solid rgba(196, 181, 253, 0.4);
   box-shadow: 0 0 8px rgba(196, 181, 253, 0.2);
@@ -37,8 +48,6 @@
   border-color: rgba(196, 181, 253, 0.6);
 }
 
-/* Text-only lavender accent */
-/* Lavender text accent - for navigation/links */
 .lavender-text {
   color: #c4b5fd;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -51,40 +60,6 @@
   transform: translateY(-1px);
 }
 
-/* Soft mint accent - for frameworks/libraries */
-.mint-accent {
-  border: 1px solid rgba(167, 243, 208, 0.4);
-  box-shadow: 0 0 8px rgba(167, 243, 208, 0.2);
-}
-
-.mint-accent:hover {
-  box-shadow: 0 0 16px rgba(167, 243, 208, 0.3);
-  border-color: rgba(167, 243, 208, 0.6);
-}
-
-/* Warm peach accent - for languages */
-.peach-accent {
-  border: 1px solid rgba(254, 202, 202, 0.4);
-  box-shadow: 0 0 8px rgba(254, 202, 202, 0.2);
-}
-
-.peach-accent:hover {
-  box-shadow: 0 0 16px rgba(254, 202, 202, 0.3);
-  border-color: rgba(254, 202, 202, 0.6);
-}
-
-/* Soft blue accent - for tools/databases */
-.sky-accent {
-  border: 1px solid rgba(186, 230, 253, 0.4);
-  box-shadow: 0 0 8px rgba(186, 230, 253, 0.2);
-}
-
-.sky-accent:hover {
-  box-shadow: 0 0 16px rgba(186, 230, 253, 0.3);
-  border-color: rgba(186, 230, 253, 0.6);
-}
-
-/* Muted gold accent - for premium/special tech */
 .gold-accent {
   border: 1px solid rgba(251, 191, 36, 0.4);
   box-shadow: 0 0 8px rgba(251, 191, 36, 0.2);
@@ -95,20 +70,7 @@
   border-color: rgba(251, 191, 36, 0.6);
 }
 
-@keyframes diagonal-drift {
-  0% { 
-    background-position: 0 0; 
-  }
-  100% { 
-    background-position: 40px 40px; 
-  }
-}
-
-.animate-diagonal-drift {
-  animation: diagonal-drift 5s linear infinite;
-}
-
-/* Toggle Container */
+/* Toggle components */
 .toggle-container {
     display: flex;
     background: rgba(255, 255, 255, 0.08);
@@ -123,7 +85,6 @@
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
 }
 
-/* Toggle Buttons */
 .toggle-button {
     flex: 1;
     padding: 12px 24px;
@@ -137,7 +98,6 @@
     color: #e2e8f0;
 }
 
-/* Active/Selected State */
 .toggle-button.active {
     background: rgba(196, 181, 253, 0.2);
     color: #c4b5fd;
@@ -146,7 +106,6 @@
     text-shadow: 0 0 8px rgba(196, 181, 253, 0.3);
 }
 
-/* Hover State */
 .toggle-button:not(.active):hover {
     background: rgba(255, 255, 255, 0.12);
     transform: translateY(-1px);
@@ -156,7 +115,7 @@
     text-shadow: 0 0 8px rgba(196, 181, 253, 0.3);
 }
 
-/* HTMX transitions for smooth overlay */
+/* HTMX transitions */
 #contact-overlay {
     transition: opacity 0.3s ease-in-out;
 }
@@ -169,12 +128,12 @@
     opacity: 1;
 }
 
-/* Modal backdrop blur effect */
 .modal-backdrop {
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
 }
-/* Mobile-specific improvements */
+
+/* Mobile responsive improvements */
 @media (max-width: 768px) {
     .mobile-nav-item {
         display: block;
@@ -192,8 +151,44 @@
         padding: 0.25rem 0.5rem;
     }
 }
-/* Ensure touch-friendly button sizes */
+
+/* Component utilities for common patterns */
+.btn-primary { 
+  @apply inline-flex items-center justify-center gap-2 h-10 px-6 py-2 font-medium rounded-md transition-colors;
+  @apply bg-purple-600 hover:bg-purple-700 text-white; 
+}
+.btn-secondary { 
+  @apply inline-flex items-center justify-center gap-2 h-10 px-6 py-2 font-medium rounded-md transition-colors;
+  @apply bg-gray-600 hover:bg-gray-700 text-white; 
+}
+.btn-success { 
+  @apply inline-flex items-center justify-center gap-2 h-10 px-6 py-2 font-medium rounded-md transition-colors;
+  @apply bg-green-600 hover:bg-green-700 text-white; 
+}
+.btn-warning { 
+  @apply inline-flex items-center justify-center gap-2 h-10 px-6 py-2 font-medium rounded-md transition-colors;
+  @apply bg-yellow-600 hover:bg-yellow-700 text-white; 
+}
+.btn-danger { 
+  @apply inline-flex items-center justify-center gap-2 h-10 px-6 py-2 font-medium rounded-md transition-colors;
+  @apply bg-red-600 hover:bg-red-700 text-white; 
+}
+
+.modal-container {
+  @apply relative bg-gray-900 rounded-xl shadow-2xl border border-purple-500/30;
+}
+
+.card {
+  @apply bg-gray-900 rounded-lg border border-purple-500/30;
+}
+
+.card-padded {
+  @apply bg-gray-900 rounded-lg border border-purple-500/30 p-6;
+}
+
+/* Touch-friendly button sizes */
 .social-button {
+    @apply flex items-center justify-center w-12 h-12 rounded-full transition-colors;
     min-width: 44px;
     min-height: 44px;
 }
