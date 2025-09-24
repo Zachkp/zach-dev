@@ -32,6 +32,19 @@ func main() {
 	r := gin.Default()
 	r.LoadHTMLGlob("templates/*")
 
+	// Configure trusted proxies for Render.com
+	if gin.Mode() == gin.ReleaseMode {
+		// Production: Trust only Render's proxy network
+		r.SetTrustedProxies([]string{
+			"10.0.0.0/8",     // Private network
+			"172.16.0.0/12",  // Docker networks
+			"192.168.0.0/16", // Private network
+		})
+	} else {
+		// Development: Trust localhost
+		r.SetTrustedProxies([]string{"127.0.0.1"})
+	}
+
 	// Add visitor tracking middleware (from admin.go)
 	r.Use(visitorTrackingMiddleware())
 
