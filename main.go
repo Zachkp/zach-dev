@@ -190,6 +190,16 @@ func main() {
 				cateringBullet2,
 				cateringBullet3,
 			},
+			"jobTitle3":  jobTitle3,
+			"company3":   company3,
+			"startDate3": startDateWork3,
+			"endDate3":   endDate3,
+			"logoPath3":  "images/freelance.png",
+			"bulletPoints3": []string{
+				freelanceBullet1,
+				freelanceBullet2,
+				freelanceBullet3,
+			},
 		})
 	})
 

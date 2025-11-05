@@ -43,6 +43,18 @@ var (
 	cateringBullet2 = `Supported event technology by troubleshooting AV equipment and managing digital order tracking systems, reducing technical delays and improving communication.`
 	cateringBullet3 = `Maintained supply inventory and coordinated timely delivery between venues, optimizing resource allocation and minimizing downtime.`
 
+	// Work Experience 3rd post
+	jobTitle3        = `Freelance Developer`
+	company3         = `Self-Employed`
+	startDateWork3   = `Aug 2025`
+	endDate3         = `Present`
+	freelanceBullet1 = `Developed custom internal tools for small businesses to streamline data management and reporting workflows, 
+						reducing manual processing time. `
+	freelanceBullet2 = `Integrated third-party APIs and platforms into existing websites and systems to extend functionality, improving 
+						client operational efficiency.`
+	freelanceBullet3 = `Collaborated directly with business owners to gather requirements, deliver solutions on schedule, and provide 
+						ongoing technical support`
+
 	// Education Experience 1st post
 	degree       = `Bachelor of Computer Science`
 	institution  = `Western Governors University`
