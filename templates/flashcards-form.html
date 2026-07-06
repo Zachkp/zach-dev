@@ -1,0 +1,44 @@
+<div class="flex-1 flex flex-col justify-center max-w-md mx-auto w-full">
+    <form hx-post="/parse-flashcards-csv"
+          hx-target="#flashcards-content"
+          hx-swap="innerHTML"
+          hx-encoding="multipart/form-data"
+          hx-indicator="#flashcards-loading"
+          class="space-y-6">
+
+        <div id="flashcards-loading" class="htmx-indicator text-center py-4">
+            <div class="inline-flex items-center gap-2 text-purple-400">
+                <svg class="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Reading your deck...
+            </div>
+        </div>
+
+        <div>
+            <label for="csvFile" class="block text-sm font-medium mb-2 text-gray-300">Choose a CSV file</label>
+            <input id="csvFile"
+                   type="file"
+                   name="csvFile"
+                   accept=".csv,text/csv"
+                   required
+                   class="block w-full text-sm text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-purple-600 file:text-white hover:file:bg-purple-700 file:cursor-pointer cursor-pointer bg-gray-800 border border-purple-500/30 rounded-md">
+        </div>
+
+        <div class="text-center">
+            <button class="btn-primary" type="submit">
+                Upload deck
+            </button>
+        </div>
+    </form>
+
+    <div class="text-center mt-4">
+        <button hx-get="/flashcards-sample"
+                hx-target="#flashcards-content"
+                hx-swap="innerHTML"
+                class="text-sm text-purple-400 hover:text-purple-300 underline underline-offset-2">
+            Or try a sample deck
+        </button>
+    </div>
+</div>

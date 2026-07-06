@@ -1,0 +1,46 @@
+<div x-data='flashcardApp({{.cardsJSON}})' class="flex flex-col flex-1 min-h-0">
+    <div class="flex items-center justify-between mb-4 text-sm text-gray-400">
+        <span class="truncate">{{.deckName}}</span>
+        <span x-text="(index + 1) + ' / ' + cards.length"></span>
+    </div>
+
+    <div @click="flipped = !flipped" class="relative flex-1 min-h-0 cursor-pointer select-none" style="perspective: 1500px;">
+        <div class="absolute inset-0 rounded-2xl border border-purple-500/30 shadow-2xl transition-transform duration-500"
+             :style="'transform-style: preserve-3d; transform: rotateY(' + (flipped ? '180deg' : '0deg') + ');'">
+            <div class="absolute inset-0 flex items-center justify-center p-12 text-center bg-gray-800 rounded-2xl"
+                 style="backface-visibility: hidden; -webkit-backface-visibility: hidden; transform: rotateY(0deg); overflow: hidden;">
+                <p class="text-3xl md:text-4xl font-semibold text-gray-100 leading-snug" x-text="cards[index].front"></p>
+            </div>
+            <div class="absolute inset-0 flex items-center justify-center p-12 text-center bg-purple-700 rounded-2xl"
+                 style="backface-visibility: hidden; -webkit-backface-visibility: hidden; transform: rotateY(180deg); overflow: hidden;">
+                <p class="text-3xl md:text-4xl font-semibold text-white leading-snug" x-text="cards[index].back"></p>
+            </div>
+        </div>
+    </div>
+    <p class="text-center text-gray-500 text-xs mt-3">Tap the card to flip</p>
+
+    <div class="flex items-center justify-center gap-4 mt-6">
+        <button @click="prev()" class="p-4 rounded-full bg-gray-800 border border-purple-500/30 hover:bg-gray-700 transition-colors" aria-label="Previous card">
+            <svg class="w-6 h-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+            </svg>
+        </button>
+        <button @click="shuffle()" class="p-4 rounded-full bg-gray-800 border border-purple-500/30 hover:bg-gray-700 transition-colors" aria-label="Shuffle cards">
+            <svg class="w-6 h-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4l5 5m0 0V4m0 5H4m16 11l-5-5m0 0v5m0-5h5M4 20l5-5M20 4l-5 5"/>
+            </svg>
+        </button>
+        <button @click="next()" class="p-4 rounded-full bg-gray-800 border border-purple-500/30 hover:bg-gray-700 transition-colors" aria-label="Next card">
+            <svg class="w-6 h-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
+        </button>
+    </div>
+
+    <div class="text-center mt-6">
+        <button hx-get="/flashcards-form" hx-target="#flashcards-content" hx-swap="innerHTML"
+                class="text-sm text-purple-400 hover:text-purple-300 underline underline-offset-2">
+            Upload a different deck
+        </button>
+    </div>
+</div>

@@ -57,6 +57,9 @@ func main() {
 	// Setup admin routes (from admin.go)
 	setupAdminRoutes(r)
 
+	// Setup flashcards routes (from flashcards.go)
+	setupFlashcardRoutes(r)
+
 	// Your existing routes...
 	r.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.html", gin.H{

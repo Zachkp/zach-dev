@@ -1,0 +1,7 @@
+<div class="flex-1 flex flex-col items-center justify-center text-center space-y-4">
+    <p class="text-red-400 text-sm">{{.error}}</p>
+    <button hx-get="/flashcards-form" hx-target="#flashcards-content" hx-swap="innerHTML"
+            class="text-sm text-purple-400 hover:text-purple-300 underline underline-offset-2">
+        Try again
+    </button>
+</div>
