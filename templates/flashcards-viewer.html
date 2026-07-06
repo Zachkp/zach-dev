@@ -9,11 +9,11 @@
              :style="'transform-style: preserve-3d; transform: rotateY(' + (flipped ? '180deg' : '0deg') + ');'">
             <div class="absolute inset-0 flex items-center justify-center p-12 text-center bg-gray-800 rounded-2xl"
                  style="backface-visibility: hidden; -webkit-backface-visibility: hidden; transform: rotateY(0deg); overflow: hidden;">
-                <p class="text-3xl md:text-4xl font-semibold text-gray-100 leading-snug" x-text="cards[index].front"></p>
+                <p class="text-3xl md:text-4xl font-semibold text-gray-100 leading-snug whitespace-pre-line" x-text="cards[index].front"></p>
             </div>
             <div class="absolute inset-0 flex items-center justify-center p-12 text-center bg-purple-700 rounded-2xl"
                  style="backface-visibility: hidden; -webkit-backface-visibility: hidden; transform: rotateY(180deg); overflow: hidden;">
-                <p class="text-3xl md:text-4xl font-semibold text-white leading-snug" x-text="cards[index].back"></p>
+                <p class="text-3xl md:text-4xl font-semibold text-white leading-snug whitespace-pre-line" x-text="cards[index].back"></p>
             </div>
         </div>
     </div>

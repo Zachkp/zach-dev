@@ -1,44 +1,160 @@
-<div class="flex-1 flex flex-col justify-center max-w-md mx-auto w-full">
-    <form hx-post="/parse-flashcards-csv"
-          hx-target="#flashcards-content"
-          hx-swap="innerHTML"
-          hx-encoding="multipart/form-data"
-          hx-indicator="#flashcards-loading"
-          class="space-y-6">
+<div x-data="deckBuilder()" class="flex-1 flex flex-col min-h-0">
 
-        <div id="flashcards-loading" class="htmx-indicator text-center py-4">
-            <div class="inline-flex items-center gap-2 text-purple-400">
-                <svg class="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                    <path class="opacity-75" fill="currentColor" d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-                Reading your deck...
+    <!-- Mode toggle -->
+    <div class="toggle-container">
+        <button type="button"
+                class="toggle-button"
+                :class="{ 'active': mode === 'upload' }"
+                @click="mode = 'upload'">Upload CSV</button>
+        <button type="button"
+                class="toggle-button"
+                :class="{ 'active': mode === 'create' }"
+                @click="mode = 'create'">Create a deck</button>
+    </div>
+
+    <!-- ===== Upload mode ===== -->
+    <div x-show="mode === 'upload'" class="flex-1 flex flex-col justify-center max-w-md mx-auto w-full">
+        <form hx-post="/parse-flashcards-csv"
+              hx-target="#flashcards-content"
+              hx-swap="innerHTML"
+              hx-encoding="multipart/form-data"
+              hx-indicator="#flashcards-loading"
+              class="space-y-6">
+
+            <div id="flashcards-loading" class="htmx-indicator text-center py-4">
+                <div class="inline-flex items-center gap-2 text-purple-400">
+                    <svg class="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Reading your deck...
+                </div>
             </div>
-        </div>
 
-        <div>
-            <label for="csvFile" class="block text-sm font-medium mb-2 text-gray-300">Choose a CSV file</label>
-            <input id="csvFile"
-                   type="file"
-                   name="csvFile"
-                   accept=".csv,text/csv"
-                   required
-                   class="block w-full text-sm text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-purple-600 file:text-white hover:file:bg-purple-700 file:cursor-pointer cursor-pointer bg-gray-800 border border-purple-500/30 rounded-md">
-        </div>
+            <div x-data="{ fileName: '', dragging: false }">
+                <label for="csvFile"
+                       @dragover.prevent="dragging = true"
+                       @dragleave.prevent="dragging = false"
+                       @drop.prevent="dragging = false; const dt = $event.dataTransfer; if (dt && dt.files.length) { document.getElementById('csvFile').files = dt.files; fileName = dt.files[0].name; }"
+                       :class="dragging ? 'border-purple-400 bg-purple-500/10' : 'border-purple-500/30 hover:border-purple-400/60 hover:bg-purple-500/5'"
+                       class="flex flex-col items-center justify-center gap-3 w-full px-6 py-8 rounded-xl border-2 border-dashed cursor-pointer transition-colors text-center">
+                    <svg class="w-10 h-10 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.9A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                    </svg>
+                    <div>
+                        <p class="text-sm text-gray-200 font-medium" x-show="!fileName">
+                            Drop a CSV here, or <span class="text-purple-300">browse</span>
+                        </p>
+                        <p class="text-sm text-purple-300 font-medium break-all" x-show="fileName" x-text="fileName"></p>
+                        <p class="text-xs text-gray-500 mt-1" x-show="!fileName">Two columns: term, definition</p>
+                        <p class="text-xs text-gray-500 mt-1" x-show="fileName">Click to choose a different file</p>
+                    </div>
+                </label>
+                <input id="csvFile"
+                       type="file"
+                       name="csvFile"
+                       accept=".csv,text/csv"
+                       required
+                       class="hidden"
+                       @change="fileName = $event.target.files.length ? $event.target.files[0].name : ''">
+            </div>
 
-        <div class="text-center">
-            <button class="btn-primary" type="submit">
-                Upload deck
+            <div class="text-center">
+                <button class="btn-primary" type="submit">
+                    Upload deck
+                </button>
+            </div>
+        </form>
+
+        <div class="text-center mt-4">
+            <button hx-get="/flashcards-sample"
+                    hx-target="#flashcards-content"
+                    hx-swap="innerHTML"
+                    class="text-sm text-purple-400 hover:text-purple-300 underline underline-offset-2">
+                Or try a sample deck
             </button>
         </div>
-    </form>
+    </div>
 
-    <div class="text-center mt-4">
-        <button hx-get="/flashcards-sample"
-                hx-target="#flashcards-content"
-                hx-swap="innerHTML"
-                class="text-sm text-purple-400 hover:text-purple-300 underline underline-offset-2">
-            Or try a sample deck
-        </button>
+    <!-- ===== Create mode ===== -->
+    <div x-show="mode === 'create'" class="flex-1 flex flex-col min-h-0">
+        <div class="max-w-2xl mx-auto w-full flex flex-col flex-1 min-h-0">
+
+            <div class="mb-4">
+                <label for="deckName" class="block text-sm font-medium mb-2 text-gray-300">Deck name (optional)</label>
+                <div class="flex items-center gap-2">
+                    <input id="deckName"
+                           type="text"
+                           x-model="deckName"
+                           placeholder="My deck"
+                           class="flex-1 text-sm text-gray-200 bg-gray-800 border border-purple-500/30 rounded-md px-3 py-2 focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                    <label class="shrink-0 inline-flex items-center gap-2 text-sm text-purple-300 hover:text-purple-200 cursor-pointer border border-purple-500/30 rounded-md px-3 py-2 hover:bg-purple-500/10 transition-colors whitespace-nowrap">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+                        </svg>
+                        Import CSV
+                        <input type="file" accept=".csv,text/csv" class="hidden" @change="importCsv($event)">
+                    </label>
+                </div>
+            </div>
+
+            <!-- Rows -->
+            <div class="flex-1 overflow-y-auto space-y-3 px-1 py-1" style="max-height: 45vh;">
+                <template x-for="(row, i) in rows" :key="i">
+                    <div class="flex items-start gap-2">
+                        <span class="text-xs text-gray-500 pt-3 w-6 text-right" x-text="i + 1"></span>
+                        <textarea x-model="row.front"
+                                  rows="3"
+                                  placeholder="Term"
+                                  style="min-height: 5.5rem;"
+                                  @keydown.enter="handleEnter($event, i, 'front')"
+                                  @input="autoGrow($event.target)"
+                                  x-init="$nextTick(() => autoGrow($el))"
+                                  class="deck-row-front flex-1 text-base text-gray-200 bg-gray-800 border border-purple-500/30 rounded-md px-3 py-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none overflow-hidden leading-relaxed"></textarea>
+                        <textarea x-model="row.back"
+                                  rows="3"
+                                  placeholder="Definition"
+                                  style="min-height: 5.5rem;"
+                                  @keydown.enter="handleEnter($event, i, 'back')"
+                                  @input="autoGrow($event.target)"
+                                  x-init="$nextTick(() => autoGrow($el))"
+                                  class="deck-row-back flex-1 text-base text-gray-200 bg-gray-800 border border-purple-500/30 rounded-md px-3 py-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none overflow-hidden leading-relaxed"></textarea>
+                        <button type="button"
+                                @click="removeRow(i)"
+                                :disabled="rows.length === 1"
+                                class="p-2 text-gray-400 hover:text-red-400 disabled:opacity-30 disabled:hover:text-gray-400 transition-colors"
+                                aria-label="Remove row">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
+                        </button>
+                    </div>
+                </template>
+            </div>
+
+            <div class="mt-4">
+                <button type="button"
+                        @click="addRow()"
+                        class="w-full flex items-center justify-center gap-2 py-3 rounded-lg border border-dashed border-purple-500/40 text-purple-300 font-medium hover:text-purple-200 hover:border-purple-400/70 hover:bg-purple-500/10 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                    </svg>
+                    Add another card
+                </button>
+                <p class="text-xs text-gray-500 text-center mt-3">Enter for next field · Shift+Enter for a new line</p>
+            </div>
+
+            <p x-show="error" x-text="error" class="text-red-400 text-sm mt-3 text-center"></p>
+
+            <div class="flex flex-wrap items-center justify-center gap-3 mt-6">
+                <button type="button" @click="study()" class="btn-primary">
+                    Save &amp; study
+                </button>
+                <button type="button" @click="downloadCsv()" class="btn-secondary">
+                    Download CSV
+                </button>
+            </div>
+            <p class="text-xs text-gray-500 text-center mt-3">Save &amp; study downloads a copy of your deck, then opens it.</p>
+        </div>
     </div>
 </div>

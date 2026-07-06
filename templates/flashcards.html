@@ -90,7 +90,7 @@
     </header>
     <hr class="mx-4 md:mx-10">
 
-    <main class="max-w-4xl mx-auto min-h-screen flex items-center justify-center pt-20 pb-12 px-4 md:px-6">
+    <main class="max-w-4xl mx-auto pb-12 px-4 md:px-6" style="padding-top: 7.5rem;">
         <div class="card-padded flex flex-col w-full" style="min-height: 70vh;">
             <div class="text-center mb-8">
                 <h1 class="text-2xl md:text-3xl font-bold mb-4 lavender-text">Flashcards</h1>
@@ -110,13 +110,317 @@
                 </div>
             </div>
         </div>
+
+        <!-- How it works -->
+        <section class="mt-12">
+            <h2 class="text-center text-xl md:text-2xl font-semibold lavender-text mb-2">How it works</h2>
+            <p class="text-center text-gray-400 text-sm mb-8">Two ways to build a deck — pick whichever's faster.</p>
+
+            <div class="grid gap-6 md:grid-cols-2">
+                <!-- Track: upload -->
+                <div class="card-padded">
+                    <div class="flex items-center gap-2 mb-5">
+                        <svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.9A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                        </svg>
+                        <h3 class="font-semibold text-gray-100">Upload a CSV</h3>
+                    </div>
+                    <ol class="space-y-4">
+                        <li class="flex gap-3">
+                            <span class="shrink-0 w-7 h-7 rounded-full bg-purple-500/15 border border-purple-500/40 text-purple-300 text-sm font-semibold flex items-center justify-center">1</span>
+                            <p class="text-sm text-gray-300 pt-0.5">Make a spreadsheet with two columns: the term in the first, its definition in the second.</p>
+                        </li>
+                        <li class="flex gap-3">
+                            <span class="shrink-0 w-7 h-7 rounded-full bg-purple-500/15 border border-purple-500/40 text-purple-300 text-sm font-semibold flex items-center justify-center">2</span>
+                            <p class="text-sm text-gray-300 pt-0.5">Export or save it as a <span class="text-purple-300">.csv</span> file. A header row like "term,definition" is fine but optional.</p>
+                        </li>
+                        <li class="flex gap-3">
+                            <span class="shrink-0 w-7 h-7 rounded-full bg-purple-500/15 border border-purple-500/40 text-purple-300 text-sm font-semibold flex items-center justify-center">3</span>
+                            <p class="text-sm text-gray-300 pt-0.5">Drop the file on <span class="text-gray-100 font-medium">Upload CSV</span> above and hit Upload deck to start studying.</p>
+                        </li>
+                    </ol>
+                </div>
+
+                <!-- Track: create -->
+                <div class="card-padded">
+                    <div class="flex items-center gap-2 mb-5">
+                        <svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                        </svg>
+                        <h3 class="font-semibold text-gray-100">Create a deck here</h3>
+                    </div>
+                    <ol class="space-y-4">
+                        <li class="flex gap-3">
+                            <span class="shrink-0 w-7 h-7 rounded-full bg-purple-500/15 border border-purple-500/40 text-purple-300 text-sm font-semibold flex items-center justify-center">1</span>
+                            <p class="text-sm text-gray-300 pt-0.5">Switch to <span class="text-gray-100 font-medium">Create a deck</span> and type a term and definition into each row.</p>
+                        </li>
+                        <li class="flex gap-3">
+                            <span class="shrink-0 w-7 h-7 rounded-full bg-purple-500/15 border border-purple-500/40 text-purple-300 text-sm font-semibold flex items-center justify-center">2</span>
+                            <p class="text-sm text-gray-300 pt-0.5">Press <span class="text-gray-100 font-medium">Enter</span> to jump to the next field, or <span class="text-gray-100 font-medium">Shift+Enter</span> for a line break. Add as many cards as you like.</p>
+                        </li>
+                        <li class="flex gap-3">
+                            <span class="shrink-0 w-7 h-7 rounded-full bg-purple-500/15 border border-purple-500/40 text-purple-300 text-sm font-semibold flex items-center justify-center">3</span>
+                            <p class="text-sm text-gray-300 pt-0.5">Hit <span class="text-gray-100 font-medium">Save &amp; study</span> to download a copy and start flipping. Already have a CSV? Use Import CSV to keep editing it.</p>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+
+            <p class="text-center text-gray-500 text-sm mt-8">
+                While studying, tap a card to flip it, and use the arrows to move through the deck or shuffle the order.
+            </p>
+        </section>
     </main>
 
     <!-- Contact Form Overlay -->
     <div id="contact-overlay" class="fixed inset-0 z-50 hidden"></div>
     <div id="url-shortener-overlay" class="fixed inset-0 z-50 hidden"></div>
 
+    <!-- Study viewer markup, reused by both the server (CSV/sample) and the in-browser builder -->
+    <template id="flashcards-viewer-template">
+        <div x-data="flashcardApp(window.__pendingCards)" class="flex flex-col flex-1 min-h-0">
+            <div class="flex items-center justify-between mb-4 text-sm text-gray-400">
+                <span class="truncate" x-text="window.__pendingDeckName"></span>
+                <span x-text="(index + 1) + ' / ' + cards.length"></span>
+            </div>
+
+            <div @click="flipped = !flipped" class="relative flex-1 min-h-0 cursor-pointer select-none" style="perspective: 1500px;">
+                <div class="absolute inset-0 rounded-2xl border border-purple-500/30 shadow-2xl transition-transform duration-500"
+                     :style="'transform-style: preserve-3d; transform: rotateY(' + (flipped ? '180deg' : '0deg') + ');'">
+                    <div class="absolute inset-0 flex items-center justify-center p-12 text-center bg-gray-800 rounded-2xl"
+                         style="backface-visibility: hidden; -webkit-backface-visibility: hidden; transform: rotateY(0deg); overflow: hidden;">
+                        <p class="text-3xl md:text-4xl font-semibold text-gray-100 leading-snug whitespace-pre-line" x-text="cards[index].front"></p>
+                    </div>
+                    <div class="absolute inset-0 flex items-center justify-center p-12 text-center bg-purple-700 rounded-2xl"
+                         style="backface-visibility: hidden; -webkit-backface-visibility: hidden; transform: rotateY(180deg); overflow: hidden;">
+                        <p class="text-3xl md:text-4xl font-semibold text-white leading-snug whitespace-pre-line" x-text="cards[index].back"></p>
+                    </div>
+                </div>
+            </div>
+            <p class="text-center text-gray-500 text-xs mt-3">Tap the card to flip</p>
+
+            <div class="flex items-center justify-center gap-4 mt-6">
+                <button @click="prev()" class="p-4 rounded-full bg-gray-800 border border-purple-500/30 hover:bg-gray-700 transition-colors" aria-label="Previous card">
+                    <svg class="w-6 h-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                    </svg>
+                </button>
+                <button @click="shuffle()" class="p-4 rounded-full bg-gray-800 border border-purple-500/30 hover:bg-gray-700 transition-colors" aria-label="Shuffle cards">
+                    <svg class="w-6 h-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4l5 5m0 0V4m0 5H4m16 11l-5-5m0 0v5m0-5h5M4 20l5-5M20 4l-5 5"/>
+                    </svg>
+                </button>
+                <button @click="next()" class="p-4 rounded-full bg-gray-800 border border-purple-500/30 hover:bg-gray-700 transition-colors" aria-label="Next card">
+                    <svg class="w-6 h-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="text-center mt-6">
+                <button hx-get="/flashcards-form" hx-target="#flashcards-content" hx-swap="innerHTML"
+                        class="text-sm text-purple-400 hover:text-purple-300 underline underline-offset-2">
+                    Back to decks
+                </button>
+            </div>
+        </div>
+    </template>
+
     <script>
+        // Minimal RFC-4180 CSV parser: handles quoted fields, embedded commas,
+        // doubled quotes, and CRLF/CR/LF line endings. Returns an array of rows.
+        function parseCsvText(text) {
+            const rows = [];
+            let field = '';
+            let record = [];
+            let inQuotes = false;
+            let i = 0;
+            const pushField = () => { record.push(field); field = ''; };
+            const pushRecord = () => { rows.push(record); record = []; };
+            while (i < text.length) {
+                const c = text[i];
+                if (inQuotes) {
+                    if (c === '"') {
+                        if (text[i + 1] === '"') { field += '"'; i += 2; continue; }
+                        inQuotes = false; i++; continue;
+                    }
+                    field += c; i++; continue;
+                }
+                if (c === '"') { inQuotes = true; i++; continue; }
+                if (c === ',') { pushField(); i++; continue; }
+                if (c === '\r') {
+                    pushField(); pushRecord();
+                    i += (text[i + 1] === '\n') ? 2 : 1;
+                    continue;
+                }
+                if (c === '\n') { pushField(); pushRecord(); i++; continue; }
+                field += c; i++;
+            }
+            pushField();
+            // Don't emit a trailing empty record from a final newline
+            if (record.length > 1 || record[0] !== '') {
+                pushRecord();
+            }
+            return rows;
+        }
+
+        // Turn raw CSV text into [{front, back}], skipping an optional header
+        // row (term/definition etc.) — same rules as the Go parser.
+        function parseDeckCsv(text) {
+            const rows = parseCsvText(text)
+                .filter(r => r.length >= 2 && (r[0] || '').trim() !== '');
+            if (rows.length === 0) return [];
+            const frontHeaders = ['term', 'question', 'front', 'word'];
+            const backHeaders = ['definition', 'answer', 'back', 'meaning'];
+            const f0 = (rows[0][0] || '').trim().toLowerCase();
+            const b0 = (rows[0][1] || '').trim().toLowerCase();
+            const data = (frontHeaders.includes(f0) && backHeaders.includes(b0))
+                ? rows.slice(1) : rows;
+            return data.map(r => ({ front: (r[0] || '').trim(), back: (r[1] || '').trim() }));
+        }
+
+        // Deck builder (upload/create toggle + create-mode rows).
+        // Defined here in the always-loaded page so it exists before HTMX
+        // swaps in the form partial that references it via x-data.
+        function deckBuilder() {
+            return {
+                mode: 'upload',
+                deckName: '',
+                error: '',
+                rows: [
+                    { front: '', back: '' },
+                    { front: '', back: '' },
+                    { front: '', back: '' }
+                ],
+                addRow() {
+                    this.rows.push({ front: '', back: '' });
+                },
+                removeRow(i) {
+                    if (this.rows.length > 1) {
+                        this.rows.splice(i, 1);
+                    }
+                },
+                // Load a CSV into the builder: parse it, drop any blank rows the
+                // user hasn't filled in, then append the imported cards so they
+                // can keep adding more.
+                importCsv(e) {
+                    const file = e.target.files && e.target.files[0];
+                    if (!file) return;
+                    const reader = new FileReader();
+                    reader.onload = () => {
+                        try {
+                            const cards = parseDeckCsv(reader.result);
+                            if (cards.length === 0) {
+                                this.error = "Couldn't find any term/definition rows in that CSV.";
+                                return;
+                            }
+                            const existing = this.rows.filter(
+                                r => r.front.trim() !== '' || r.back.trim() !== ''
+                            );
+                            this.rows = existing.concat(
+                                cards.map(c => ({ front: c.front, back: c.back }))
+                            );
+                            if (this.rows.length === 0) {
+                                this.rows.push({ front: '', back: '' });
+                            }
+                            this.error = '';
+                            // Size the freshly populated textareas to their content
+                            this.$nextTick(() => {
+                                document.querySelectorAll('.deck-row-front, .deck-row-back')
+                                    .forEach(el => this.autoGrow(el));
+                            });
+                        } catch (err) {
+                            this.error = "Sorry, that file couldn't be read as a CSV.";
+                        }
+                    };
+                    reader.onerror = () => { this.error = "Sorry, that file couldn't be read."; };
+                    reader.readAsText(file);
+                    // Reset so selecting the same file again still fires change
+                    e.target.value = '';
+                },
+                // Enter alone advances (front -> back -> next card's front);
+                // Shift+Enter falls through to insert a newline in the textarea.
+                handleEnter(e, i, field) {
+                    if (e.shiftKey) {
+                        return;
+                    }
+                    e.preventDefault();
+                    if (field === 'front') {
+                        this.$nextTick(() => {
+                            const backs = document.querySelectorAll('.deck-row-back');
+                            if (backs[i]) backs[i].focus();
+                        });
+                        return;
+                    }
+                    // field === 'back'
+                    if (i === this.rows.length - 1) {
+                        this.addRow();
+                    }
+                    this.$nextTick(() => {
+                        const fronts = document.querySelectorAll('.deck-row-front');
+                        if (fronts[i + 1]) fronts[i + 1].focus();
+                    });
+                },
+                // Grow a textarea to fit its content. The CSS min-height on the
+                // element provides the default floor (and works even while the
+                // create panel is hidden, unlike measuring clientHeight here).
+                autoGrow(el) {
+                    el.style.height = 'auto';
+                    el.style.height = el.scrollHeight + 'px';
+                },
+                validCards() {
+                    return this.rows
+                        .map(r => ({ front: r.front.trim(), back: r.back.trim() }))
+                        .filter(r => r.front !== '' && r.back !== '');
+                },
+                study() {
+                    const cards = this.validCards();
+                    if (cards.length === 0) {
+                        this.error = 'Add at least one card with both a term and a definition.';
+                        return;
+                    }
+                    this.error = '';
+                    // Save a copy of the deck, then start studying
+                    this.saveCsvFile(cards);
+                    const name = this.deckName.trim() || 'My deck';
+                    window.startFlashcardStudy(name, cards);
+                },
+                downloadCsv() {
+                    const cards = this.validCards();
+                    if (cards.length === 0) {
+                        this.error = 'Add at least one card with both a term and a definition.';
+                        return;
+                    }
+                    this.error = '';
+                    this.saveCsvFile(cards);
+                },
+                // Build a CSV from the cards and trigger a download.
+                saveCsvFile(cards) {
+                    const esc = (s) => {
+                        if (/[",\n]/.test(s)) {
+                            return '"' + s.replace(/"/g, '""') + '"';
+                        }
+                        return s;
+                    };
+                    let csv = 'term,definition\n';
+                    cards.forEach(c => {
+                        csv += esc(c.front) + ',' + esc(c.back) + '\n';
+                    });
+                    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    const safeName = (this.deckName.trim() || 'my-deck')
+                        .toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+                    a.href = url;
+                    a.download = (safeName || 'my-deck') + '.csv';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                }
+            }
+        }
+
         // Alpine component powering the flip-card viewer
         function flashcardApp(cards) {
             return {
@@ -141,6 +445,26 @@
                 }
             }
         }
+
+        // Launch the study viewer from in-browser data (used by the deck builder).
+        // Cards and deck name are passed via globals rather than spliced into the
+        // markup — reading template.innerHTML re-serializes attributes with double
+        // quotes, which would break a JSON payload injected into x-data.
+        window.startFlashcardStudy = function (deckName, cards) {
+            window.__pendingCards = cards;
+            window.__pendingDeckName = deckName;
+            const html = document.getElementById('flashcards-viewer-template').innerHTML;
+            const target = document.getElementById('flashcards-content');
+            target.innerHTML = html;
+            // Activate hx-get bindings on the new "Back to decks" button
+            if (window.htmx) {
+                window.htmx.process(target);
+            }
+            // Activate Alpine's x-data on the freshly injected subtree
+            if (window.Alpine && Alpine.initTree) {
+                Alpine.initTree(target);
+            }
+        };
     </script>
 </body>
 </html>
