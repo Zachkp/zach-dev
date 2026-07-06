@@ -13,13 +13,13 @@
     </div>
 
     <!-- ===== Upload mode ===== -->
-    <div x-show="mode === 'upload'" class="flex-1 flex flex-col justify-center max-w-md mx-auto w-full">
+    <div x-show="mode === 'upload'" class="flex-1 flex flex-col justify-center w-full max-w-xl mx-auto" x-data="{ fileName: '', dragging: false }">
         <form hx-post="/parse-flashcards-csv"
               hx-target="#flashcards-content"
               hx-swap="innerHTML"
               hx-encoding="multipart/form-data"
               hx-indicator="#flashcards-loading"
-              class="space-y-6">
+              class="flex flex-col">
 
             <div id="flashcards-loading" class="htmx-indicator text-center py-4">
                 <div class="inline-flex items-center gap-2 text-purple-400">
@@ -31,42 +31,37 @@
                 </div>
             </div>
 
-            <div x-data="{ fileName: '', dragging: false }">
-                <label for="csvFile"
-                       @dragover.prevent="dragging = true"
-                       @dragleave.prevent="dragging = false"
-                       @drop.prevent="dragging = false; const dt = $event.dataTransfer; if (dt && dt.files.length) { document.getElementById('csvFile').files = dt.files; fileName = dt.files[0].name; }"
-                       :class="dragging ? 'border-purple-400 bg-purple-500/10' : 'border-purple-500/30 hover:border-purple-400/60 hover:bg-purple-500/5'"
-                       class="flex flex-col items-center justify-center gap-3 w-full px-6 py-8 rounded-xl border-2 border-dashed cursor-pointer transition-colors text-center">
-                    <svg class="w-10 h-10 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.9A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
-                    </svg>
-                    <div>
-                        <p class="text-sm text-gray-200 font-medium" x-show="!fileName">
-                            Drop a CSV here, or <span class="text-purple-300">browse</span>
-                        </p>
-                        <p class="text-sm text-purple-300 font-medium break-all" x-show="fileName" x-text="fileName"></p>
-                        <p class="text-xs text-gray-500 mt-1" x-show="!fileName">Two columns: term, definition</p>
-                        <p class="text-xs text-gray-500 mt-1" x-show="fileName">Click to choose a different file</p>
-                    </div>
-                </label>
-                <input id="csvFile"
-                       type="file"
-                       name="csvFile"
-                       accept=".csv,text/csv"
-                       required
-                       class="hidden"
-                       @change="fileName = $event.target.files.length ? $event.target.files[0].name : ''">
-            </div>
+            <!-- One big drop / click target -->
+            <label for="csvFile"
+                   @dragover.prevent="dragging = true"
+                   @dragleave.prevent="dragging = false"
+                   @drop.prevent="dragging = false; const dt = $event.dataTransfer; if (dt && dt.files.length) { const inp = document.getElementById('csvFile'); inp.files = dt.files; fileName = dt.files[0].name; inp.closest('form').requestSubmit(); }"
+                   class="flex flex-col items-center justify-center gap-3 w-full cursor-pointer text-center"
+                   style="border: 2px dashed rgba(168,139,250,0.4); border-radius: 1rem; background: rgba(139,92,246,0.04); min-height: 11rem; padding: 1.5rem; transition: border-color .2s, background-color .2s;"
+                   :style="dragging ? { borderColor: 'rgba(196,181,253,0.95)', backgroundColor: 'rgba(139,92,246,0.14)' } : {}">
+                <svg class="w-10 h-10 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.9A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                </svg>
+                <div>
+                    <p class="text-base text-gray-100 font-semibold" x-show="!fileName">
+                        Drop a CSV here, or <span class="text-purple-300 underline underline-offset-2">click to browse</span>
+                    </p>
+                    <p class="text-base text-purple-300 font-semibold break-all" x-show="fileName" x-text="fileName"></p>
+                    <p class="text-sm text-gray-500 mt-1" x-show="!fileName">Two columns: term, definition</p>
+                    <p class="text-sm text-gray-500 mt-1" x-show="fileName">Uploading…</p>
+                </div>
+            </label>
 
-            <div class="text-center">
-                <button class="btn-primary" type="submit">
-                    Upload deck
-                </button>
-            </div>
+            <input id="csvFile"
+                   type="file"
+                   name="csvFile"
+                   accept=".csv,text/csv"
+                   required
+                   class="hidden"
+                   @change="if ($event.target.files.length) { fileName = $event.target.files[0].name; $el.closest('form').requestSubmit(); }">
         </form>
 
-        <div class="text-center mt-4">
+        <div class="text-center mt-8">
             <button hx-get="/flashcards-sample"
                     hx-target="#flashcards-content"
                     hx-swap="innerHTML"
