@@ -1,27 +1,27 @@
 package main
 
 var (
-	AboutMe = `I love building software that's both useful and fun, and I'm always curious about how 
-	things work behind the scenes. Most of my projects start with a simple idea and turn 
-	into a chance to learn something new—whether exploring a different language, 
-	experimenting with tools, or solving tricky problems. I'm looking for opportunities 
+	AboutMe = `I love building software that's both useful and fun, and I'm always curious about how
+	things work behind the scenes. Most of my projects start with a simple idea and turn
+	into a chance to learn something new—whether exploring a different language,
+	experimenting with tools, or solving tricky problems. I'm looking for opportunities
 	where that curiosity and hands-on approach can make a real impact.
-	
-	When I'm not coding, you'll find me training Muay Thai, shooting pool with friends, 
+
+	When I'm not coding, you'll find me training Muay Thai, shooting pool with friends,
 	or chasing down a new challenge outside the screen.`
 
 	ProjectOne = `A terminal-based email client built in Go with fuzzyfinder capabilities
 	using the Charmbracelet TUI framework and go-imap.`
 
-	ProjectTwo = `A terminal-based music streaming application built in Go with an elegant TUI 
+	ProjectTwo = `A terminal-based music streaming application built in Go with an elegant TUI
 	interface, leveraging yt-dlp and mpv for seamless YouTube Music playback directly from the command line.`
 
-	ProjectThree = `A machine learning-powered web application that uses TF-IDF vectorization and cosine 
-	similarity to recommend games based on content analysis, featuring interactive data visualizations and 
+	ProjectThree = `A machine learning-powered web application that uses TF-IDF vectorization and cosine
+	similarity to recommend games based on content analysis, featuring interactive data visualizations and
 	real-time filtering by user reviews and ratings.`
 
-	ProjectFour = `A modern, responsive portfolio website built with Go, Gin framework, and HTMX for 
-	dynamic interactions, styled with Tailwind CSS and enhanced with Alpine.js for seamless client-side 
+	ProjectFour = `A modern, responsive portfolio website built with Go, Gin framework, and HTMX for
+	dynamic interactions, styled with Tailwind CSS and enhanced with Alpine.js for seamless client-side
 	interactivity without traditional JavaScript frameworks.`
 
 	present = `Present`
@@ -29,7 +29,7 @@ var (
 	jobTitle      = `Presentation Expert`
 	company       = `Target`
 	startDateWork = `Aug 2023`
-	endDate       = `Present`
+	endDate       = `February 2026`
 	targetBullet1 = `Executed over 300 merchandising transitions on tight timelines by organizing team workflows and adapting quickly to changing priorities.`
 	targetBullet2 = `Boosted operational efficiency by managing backroom inventory processes and streamlining communication between floor and logistics teams.`
 	targetBullet3 = `Enhanced pricing and signage accuracy across departments by standardizing daily checks and collaborating cross-functionally.`
@@ -38,7 +38,7 @@ var (
 	jobTitle2       = `Manager`
 	company2        = `Jasons Catered Events`
 	startDateWork2  = `Aug 2014`
-	endDate2        = present
+	endDate2        = "February 2026"
 	cateringBullet1 = `Improved client satisfaction by coordinating customized menus and ensuring all dietary requirements were accurately met.`
 	cateringBullet2 = `Supported event technology by troubleshooting AV equipment and managing digital order tracking systems, reducing technical delays and improving communication.`
 	cateringBullet3 = `Maintained supply inventory and coordinated timely delivery between venues, optimizing resource allocation and minimizing downtime.`
@@ -47,13 +47,25 @@ var (
 	jobTitle3        = `Freelance Developer`
 	company3         = `Self-Employed`
 	startDateWork3   = `Aug 2025`
-	endDate3         = `Present`
-	freelanceBullet1 = `Developed custom internal tools for small businesses to streamline data management and reporting workflows, 
+	endDate3         = present
+	freelanceBullet1 = `Developed custom internal tools for small businesses to streamline data management and reporting workflows,
 						reducing manual processing time. `
-	freelanceBullet2 = `Integrated third-party APIs and platforms into existing websites and systems to extend functionality, improving 
+	freelanceBullet2 = `Integrated third-party APIs and platforms into existing websites and systems to extend functionality, improving
 						client operational efficiency.`
-	freelanceBullet3 = `Collaborated directly with business owners to gather requirements, deliver solutions on schedule, and provide 
+	freelanceBullet3 = `Collaborated directly with business owners to gather requirements, deliver solutions on schedule, and provide
 						ongoing technical support`
+
+	// Work Experience 3rd post
+	jobTitle4        = `Level 1 Service Desk Analyst`
+	company4         = `Taco Bell`
+	startDateWork4   = `February 2026`
+	endDate4         = present
+	tbBullet1 		 = `Provide Tier 1 support for restaurant POS and network infrastructure across a national store fleet, diagnosing connectivity, hardware, and configuration issues with non-technical store staff over the phone.`
+	tbBullet2 		 = `Identified a recurring incident pattern in store network bridge adapter misconfiguration and independently developed a self-service batch remediation tool, designed for store employees to run without analyst phone guidance.`
+	tbBullet3 		 = `Iterated the tool through 11 versions adding dry-run mode, adapter auto-detection, partial-configuration repair, and run logging; validated it in a purpose-built Windows 11 VM environment and authored an internal proposal for fleet-wide deployment via BigFix.`
+	tbBullet4		 = `Maintain a perfect score across all quality assurance evaluations to date.`
+	tbBullet5		 = `Handle an average of 25–30 support calls per day at a 12.5-minute average talk time, resolving issues efficiently while sustaining evaluation quality.`
+
 
 	// Education Experience 1st post
 	degree       = `Bachelor of Computer Science`

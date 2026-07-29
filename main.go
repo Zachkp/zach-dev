@@ -167,12 +167,24 @@ func main() {
 		c.Header("Content-Transfer-Encoding", "binary")
 		c.Header("Content-Disposition", "attachment; filename=Zachariah_Kordas_Potter_Resume.pdf")
 		c.Header("Content-Type", "application/pdf")
-		c.File("./static/Zach Kordas-Potter Resume.pdf")
+		c.File("./static/Zach Kordas-Potter Resume 2026.pdf")
 	})
 
 	// Work experience content
 	r.GET("/work-content", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "work-content.html", gin.H{
+			"jobTitle4":  jobTitle4,
+			"company4":   company4,
+			"startDate4": startDateWork4,
+			"endDate4":   endDate4,
+			"logoPath4":  "images/tbLogo.jpg",
+			"bulletPoints4": []string{
+				tbBullet1,
+				tbBullet2,
+				tbBullet3,
+				tbBullet4,
+				tbBullet5,
+			},
 			"jobTitle":  jobTitle,
 			"company":   company,
 			"startDate": startDateWork,
